@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kai's Cabin</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body class="poppins-font">
+    <nav class="navbar">
+        <div class="navbar__logo">
+            <span class="navbar__logo-text">Kai's Cabin</span>
+        </div>
+        <button class="navbar__toggle" id="navbarToggle" aria-label="Open navigation">
+            <span class="navbar__hamburger"></span>
+            <span class="navbar__hamburger"></span>
+            <span class="navbar__hamburger"></span>
+        </button>
+        <ul class="navbar__links" id="navbarLinks">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#amenities">Amenities</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#booking">Booking</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero__overlay"></div>
+        <div class="hero__content">
+            <img src="assets/images/logo.png" alt="Kai's Cabin Logo" class="hero__logo">
+            <p class="hero__tagline">Comfort, Privacy, Lasting Memories.</p>
+            <a href="#booking" class="btn-primary">Reserve Now</a>
+        </div>
+    </section>
+
+    <!-- Separator -->
+    <div class="section-separator"></div>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="about__content">
+            <div class="about__text">
+                <h2>About</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.</p>
+            </div>
+            <div class="about__image">
+                <img src="assets/images/resthouse2.png" alt="Resthouse Image" class="about__photo">
+            </div>
+        </div>
+    </section>
+
+    <!-- Separator -->
+    <div class="section-separator"></div>
+
+    <!-- Amenities Section -->
+    <section id="amenities" class="amenities">
+        <h2 class="amenities__title">Amenities</h2>
+        <span class="amenities__swipe-hint">Swipe for more &rarr;</span>
+        <div class="amenities__categories"></div>
+        <div class="amenities__carousel"></div>
+        <div class="amenities__indicator"></div>
+        <div class="amenities__carousel-controls"></div>
+    </section>
+
+    <!-- Separator -->
+    <div class="section-separator"></div>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <h2 class="gallery__title">Gallery</h2>
+        <div class="gallery__content">
+            <div class="gallery__slideshow" id="gallerySlideshow"></div>
+        </div>
+        <div class="gallery__controls">
+            <button class="gallery__btn gallery__btn--prev" aria-label="Previous">&lt;</button>
+            <button class="gallery__btn gallery__btn--next" aria-label="Next">&gt;</button>
+        </div>
+    </section>
+
+    <!-- Separator -->
+    <div class="section-separator"></div>
+
+    <!-- Booking Section -->
+    <section id="booking" class="booking">
+        <div class="booking__content">
+            <div class="booking__form">
+                <h2>Book Your Stay</h2>
+                <div class="booking__calendar">
+                    <div class="mock-calendar">
+                        <div class="mock-calendar__header">
+                            <span class="mock-calendar__month">June 2025</span>
+                        </div>
+                        <div class="mock-calendar__days">
+                            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                        </div>
+                        <div class="mock-calendar__dates">
+                            <span class="mock-calendar__date muted">1</span>
+                            <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+                            <span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span>
+                            <span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span>
+                            <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+                            <span>29</span><span>30</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="booking__email">
+                    <input type="email" placeholder="Your email" />
+                    <button type="submit">Submit</button>
+                </div>
+            </div>
+            <div class="booking__location">
+                <div class="booking__map">
+                    <h2>Find Us</h2>
+                    <iframe
+                        src="https://www.google.com/maps?q=Kai's+Cabin,+Pulong+Buhangin,+Santa+Maria,+Bulacan&output=embed"
+                        width="100%"
+                        height="280"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                    <a
+                        href="https://www.google.com/maps/dir/?api=1&destination=Kai's+Cabin,+Pulong+Buhangin,+Santa+Maria,+Bulacan"
+                        target="_blank"
+                        rel="noopener"
+                        class="booking__map-link"
+                    >Get Directions on Google Maps</a>
+                </div>
+                <div class="booking__directions">
+                    <h3>How to Get Here</h3>
+                    <details>
+                        <summary>Private Vehicle (From Manila or North Luzon)</summary>
+                        <ol>
+                            <li>Exit NLEX at Bocaue.</li>
+                            <li>From Manila: Turn right onto Gov. Fortunato Halili Ave.<br>
+                                From North Luzon: Turn left onto Gov. Fortunato Halili Ave.</li>
+                            <li>Continue straight, pass BMMG Hospital, Mateo Hospital.</li>
+                            <li>Turn left onto Santa Maria Bypass Road (Landmarks: PTT, Shakey's, Contis, Peri Peri).</li>
+                            <li>Merge onto Norzagaray - Santa Maria Road (Landmark: Waltermart Sta. Maria).</li>
+                            <li>Go straight, pass Goldilocks, Philhealth, RePhil Gas station.</li>
+                            <li>Turn onto City Land Drive (Landmarks: AllHome, Jollibee, McDo).</li>
+                            <li>Pin Pulong Buhangin Barangay Hall for Waze/Google Maps.</li>
+                            <li>Straight along Cityland Drive, turn left on Lopez Jaena before Divine Mercy chapel to reach Kai’s Cabin.</li>
+                        </ol>
+                    </details>
+                    <details>
+                        <summary>Commute</summary>
+                        <ol>
+                            <li>Ride a bus at Trinoma P2P terminal bound to Sta. Maria (Precious Grace Transport).</li>
+                            <li>Drop at Sta. Clara or Caypombo, then ride a Jeep/Bus to Norzagaray.</li>
+                            <li>Ask to be dropped at City Land or Pulong Buhangin Barangay Hall.</li>
+                            <li>Ride a trike to Kai’s Cabin.</li>
+                        </ol>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Separator -->
+    <div class="section-separator"></div>
+
+    <!-- Contact Section -->
+    <footer id="contact" class="contact">
+        <div class="contact__content">
+            <div class="contact__social">
+                <h2>Follow Us</h2>
+                <div class="contact__icons">
+                    <a href="https://web.facebook.com/kaiscabin" class="contact__icon">
+                        <img src="assets/icons/facebook.png" alt="Facebook Icon">
+                    </a>
+                    <a href="https://www.instagram.com/kais.cabin/?utm_source=ig_web_button_share_sheet" class="contact__icon">
+                        <img src="assets/icons/instagram.png" alt="Instagram Icon">
+                    </a>
+                    <a href="#" class="contact__icon">
+                        <img src="assets/icons/tiktok.png" alt="Tiktok Icon">
+                    </a>
+                </div>
+            </div>
+            <div class="contact__info">
+                <h2>Contact Us</h2>
+                <div class="contact__details">
+                    <div class="contact__detail">
+                        <img src="assets/icons/email.png" alt="Email Icon">
+                        <span>info@kaiscabin.com</span>
+                    </div>
+                    <div class="contact__detail">
+                        <img src="assets/icons/phone.png" alt="Phone Icon">
+                        <span>+63 912 345 6789</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/navbar.js"></script>
+    <script src="js/amenities.js"></script>
+    <script src="js/gallery.js"></script>
+</body>
+</html>

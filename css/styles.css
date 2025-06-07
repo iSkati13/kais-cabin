@@ -1,0 +1,33 @@
+@import url('navbar.css');
+@import url('hero.css');
+@import url('about.css');
+@import url('amenities.css');
+@import url('gallery.css');
+@import url('booking.css');
+@import url('contact.css');
+
+/* Color Palette Variables */
+:root {
+    --main-color: #f5f5dc; /* Parchment/White */
+    --secondary-color: #c2b280; /* Sand */
+    --accent-color: #77815c; /* Sage */
+}
+
+/* Base styles */
+body {
+    margin: 0;
+    font-family: 'Montserrat', 'Poppins', sans-serif;
+    background-color: var(--main-color);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.section-separator {
+    width: 60%;
+    margin: 40px auto;
+    border: none;
+    border-top: 2px dashed var(--accent-color);
+    opacity: 0.4;
+}

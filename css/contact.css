@@ -1,0 +1,105 @@
+.contact {
+    background-color: var(--accent-color);
+    color: var(--main-color);
+    min-height: 120px;      /* Smaller for desktop */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0;        /* Less vertical padding */
+}
+
+.contact__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 800px;      /* Slightly smaller max width */
+    gap: 20px;             /* Less gap */
+    padding: 0 12px;
+}
+
+.contact__social, .contact__info {
+    flex: 1;
+    text-align: center;
+}
+
+.contact__social h2, .contact__info h2 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+.contact__icons {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+.contact__icon img {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.2s;
+}
+
+.contact__icon img:hover {
+    transform: scale(1.15);
+}
+
+.contact__details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.contact__detail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+}
+
+.contact__detail img {
+    width: 22px;
+    height: 22px;
+}
+
+@media (max-width: 900px) {
+    .contact__content {
+        max-width: 98vw;
+        gap: 14px;
+        padding: 0 4vw;
+    }
+}
+
+@media (max-width: 600px) {
+    .contact {
+        min-height: 0;
+        padding: 18px 0;
+    }
+    .contact__content {
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        padding: 0 2vw;
+    }
+    .contact__social, .contact__info {
+        width: 100%;
+        text-align: center;
+    }
+    .contact__icons {
+        gap: 10px;
+    }
+    .contact__icon img {
+        width: 26px;
+        height: 26px;
+    }
+    .contact__detail img {
+        width: 18px;
+        height: 18px;
+    }
+    .contact__social h2, .contact__info h2 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
+}
