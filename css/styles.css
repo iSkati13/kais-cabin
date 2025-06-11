@@ -31,3 +31,57 @@ html {
     border-top: 2px dashed var(--accent-color);
     opacity: 0.4;
 }
+
+/* ---------- Responsive Media Queries ----------
+   Only use for global layout/typography.
+   Section-specific tweaks go in their own CSS files.
+------------------------------------------------- */
+
+/* Tablet styles */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .hero__heading {
+        font-size: 3.5rem;
+    }
+    .hero__tagline {
+        font-size: 2rem;
+    }
+    body {
+        padding: 0 1.5rem;
+    }
+    .amenities__content,
+    .contact__content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+}
+
+/* Desktop styles */
+@media (min-width: 1025px) {
+    .hero__heading {
+        font-size: 4.2rem;
+    }
+    .hero__tagline {
+        font-size: 2.4rem;
+    }
+    body {
+        padding: 0 2rem;
+    }
+    .amenities__content,
+    .contact__content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem;
+    }
+}
+
+/* Mobile fallback: stack sections in 1 column */
+@media (max-width: 600px) {
+    .amenities__content,
+    .contact__content {
+        display: block;
+    }
+    body {
+        padding: 0;
+    }
+}

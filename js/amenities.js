@@ -45,65 +45,76 @@ document.addEventListener('DOMContentLoaded', () => {
   const carousel = document.querySelector('.amenities__carousel');
   const indicator = document.querySelector('.amenities__indicator');
   const controlsContainer = document.querySelector('.amenities__carousel-controls');
+  const amenitiesSection = document.getElementById('amenities');
 
   let currentCategory = 0;
   let currentSlide = 0;
-  let lastSlide = 0;
-  let slideDirection = 'right'; // or 'left'
+  let slideDirection = 'right';
 
   function getCardsPerSlide() {
-    return window.innerWidth <= 600 ? 2 : 3;
+    return 4; // Always 4 per slide
   }
 
   function renderCategories() {
     categoriesContainer.innerHTML = '';
     amenitiesData.forEach((cat, idx) => {
       const btn = document.createElement('button');
-      btn.className = 'amenities__category-btn' + (idx === currentCategory ? ' active' : '');
-      btn.textContent = `${cat.category} (${cat.items.length})`;
+      btn.className = 'category-btn' + (idx === currentCategory ? ' active' : '');
+      btn.setAttribute('aria-label', `${cat.category} amenities`);
+      btn.setAttribute('data-category', cat.category);
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', idx === currentCategory ? 'true' : 'false');
+      btn.innerHTML = `
+        <span class="category-label">${cat.category}</span>
+        <span class="category-count">(${cat.items.length})</span>
+      `;
       btn.onclick = () => {
         currentCategory = idx;
         currentSlide = 0;
-        renderCategories();
-        renderCarousel();
-        renderIndicator();
-        renderControls();
+        window.justSwitchedCategory = true;
+        renderAll();
       };
       categoriesContainer.appendChild(btn);
     });
-
-    // Add a ghost spacer for scrollable right space on mobile
-    const spacer = document.createElement('div');
-    spacer.className = 'amenities__category-spacer';
-    categoriesContainer.appendChild(spacer);
   }
 
   function renderCarousel() {
     carousel.innerHTML = '';
     const items = amenitiesData[currentCategory].items;
-    const cardsPerSlide = getCardsPerSlide();
+    const cardsPerSlide = 4;
     const slides = [];
     for (let i = 0; i < items.length; i += cardsPerSlide) {
       slides.push(items.slice(i, i + cardsPerSlide));
     }
-    slides.forEach((slide, idx) => {
-      const slideDiv = document.createElement('div');
-      let directionClass = '';
-      if (idx === currentSlide) {
-        directionClass = slideDirection === 'right' ? ' slide-in-right' : ' slide-in-left';
-      }
-      slideDiv.className = 'amenities__slide' + (idx === currentSlide ? ' active' + directionClass : '');
-      slide.forEach(item => {
-        slideDiv.innerHTML += `
-          <div class="amenity">
-            <img src="assets/icons/${item.icon}" alt="${item.label}" class="amenity__icon">
-            <span class="amenity__label">${item.label}</span>
-            <span class="amenity__desc">${item.desc}</span>
-          </div>
-        `;
-      });
-      carousel.appendChild(slideDiv);
+
+    // Only render the current slide
+    const slide = slides[currentSlide] || [];
+    const slideDiv = document.createElement('div');
+
+    // Animation class
+    let animClass = '';
+    if (window.justSwitchedCategory) {
+      animClass = ' slide-fade';
+      window.justSwitchedCategory = false;
+    } else if (window.slideDirection === 'right') {
+      animClass = ' slide-in-right';
+    } else if (window.slideDirection === 'left') {
+      animClass = ' slide-in-left';
+    }
+
+    slideDiv.className = 'amenities__slide active' + animClass;
+
+    slide.forEach(item => {
+      slideDiv.innerHTML += `
+        <div class="amenity">
+          <img src="assets/icons/${item.icon}" alt="${item.label}" class="amenity__icon">
+          <span class="amenity__label">${item.label}</span>
+          <span class="amenity__desc">${item.desc}</span>
+        </div>
+      `;
     });
+
+    carousel.appendChild(slideDiv);
   }
 
   function renderIndicator() {
@@ -111,14 +122,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const items = amenitiesData[currentCategory].items;
     const cardsPerSlide = getCardsPerSlide();
     const slideCount = Math.ceil(items.length / cardsPerSlide);
+    if (slideCount <= 1) {
+      indicator.style.display = 'none';
+      return;
+    } else {
+      indicator.style.display = '';
+    }
     for (let i = 0; i < slideCount; i++) {
       const dot = document.createElement('span');
       dot.className = 'amenities__dot' + (i === currentSlide ? ' active' : '');
       dot.onclick = () => {
         currentSlide = i;
-        renderCarousel();
-        renderIndicator();
-        renderControls();
+        renderAll();
       };
       indicator.appendChild(dot);
     }
@@ -130,51 +145,54 @@ document.addEventListener('DOMContentLoaded', () => {
     const cardsPerSlide = getCardsPerSlide();
     const slideCount = Math.ceil(items.length / cardsPerSlide);
 
-    // Only show Prev if not on first slide
     if (currentSlide > 0) {
       const prevBtn = document.createElement('button');
       prevBtn.className = 'amenities__carousel-btn prev';
       prevBtn.setAttribute('aria-label', 'Previous');
       prevBtn.innerHTML = '&#8592;';
       prevBtn.onclick = () => {
-        // When going to previous slide
-        slideDirection = 'left';
+        window.slideDirection = 'left';
         currentSlide--;
-        renderCarousel();
-        renderIndicator();
-        renderControls();
+        renderAll();
       };
       controlsContainer.appendChild(prevBtn);
     }
 
-    // Only show Next if not on last slide
     if (currentSlide < slideCount - 1) {
       const nextBtn = document.createElement('button');
       nextBtn.className = 'amenities__carousel-btn next';
       nextBtn.setAttribute('aria-label', 'Next');
       nextBtn.innerHTML = '&#8594;';
       nextBtn.onclick = () => {
-        // When going to next slide
-        slideDirection = 'right';
+        window.slideDirection = 'right';
         currentSlide++;
-        renderCarousel();
-        renderIndicator();
-        renderControls();
+        renderAll();
       };
       controlsContainer.appendChild(nextBtn);
     }
   }
 
-  // Responsive: re-render on resize
-  window.addEventListener('resize', () => {
-    currentSlide = 0;
+  function renderAll() {
+    renderCategories();
     renderCarousel();
     renderIndicator();
     renderControls();
+  }
+
+  function goToSlide(idx) {
+    currentSlide = idx;
+    renderCarousel();
+    renderIndicator();
+  }
+
+  // Responsive: re-render on resize
+  window.addEventListener('resize', () => {
+    currentSlide = 0;
+    renderAll();
   });
 
-  // --- Swipe for both cards and indicator area ---
-  let xDown = null, yDown = null;
+  // --- Touch/Swipe Support ---
+  let xDown = null, yDown = null, startX = null;
   function handleTouchStart(evt) {
     xDown = evt.touches[0].clientX;
     yDown = evt.touches[0].clientY;
@@ -190,51 +208,44 @@ document.addEventListener('DOMContentLoaded', () => {
       const slideCount = Math.ceil(items.length / getCardsPerSlide());
       if (xDiff > 0 && currentSlide < slideCount - 1) {
         currentSlide++;
-        renderCarousel();
-        renderIndicator();
-        renderControls();
+        slideDirection = 'right';
+        renderAll();
       } else if (xDiff < 0 && currentSlide > 0) {
         currentSlide--;
-        renderCarousel();
-        renderIndicator();
-        renderControls();
+        slideDirection = 'left';
+        renderAll();
       }
       xDown = null;
       yDown = null;
     }
   }
-  // Attach swipe to amenities section so it works everywhere
-  const amenitiesSection = document.getElementById('amenities');
-  amenitiesSection.addEventListener('touchstart', handleTouchStart, false);
-  amenitiesSection.addEventListener('touchmove', handleTouchMove, false);
+  if (amenitiesSection) {
+    amenitiesSection.addEventListener('touchstart', handleTouchStart, false);
+    amenitiesSection.addEventListener('touchmove', handleTouchMove, false);
 
-  amenitiesSection.addEventListener('mousedown', (e) => {
-    startX = e.clientX;
-  });
-  amenitiesSection.addEventListener('mouseup', (e) => {
-    if (startX === null) return;
-    let diff = startX - e.clientX;
-    const items = amenitiesData[currentCategory].items;
-    const slideCount = Math.ceil(items.length / getCardsPerSlide());
-    if (Math.abs(diff) > 30) {
-      if (diff > 0 && currentSlide < slideCount - 1) {
-        currentSlide++;
-        renderCarousel();
-        renderIndicator();
-        renderControls();
-      } else if (diff < 0 && currentSlide > 0) {
-        currentSlide--;
-        renderCarousel();
-        renderIndicator();
-        renderControls();
+    amenitiesSection.addEventListener('mousedown', (e) => {
+      startX = e.clientX;
+    });
+    amenitiesSection.addEventListener('mouseup', (e) => {
+      if (startX === null) return;
+      let diff = startX - e.clientX;
+      const items = amenitiesData[currentCategory].items;
+      const slideCount = Math.ceil(items.length / getCardsPerSlide());
+      if (Math.abs(diff) > 30) {
+        if (diff > 0 && currentSlide < slideCount - 1) {
+          currentSlide++;
+          slideDirection = 'right';
+          renderAll();
+        } else if (diff < 0 && currentSlide > 0) {
+          currentSlide--;
+          slideDirection = 'left';
+          renderAll();
+        }
       }
-    }
-    startX = null;
-  });
+      startX = null;
+    });
+  }
 
   // Initial render
-  renderCategories();
-  renderCarousel();
-  renderIndicator();
-  renderControls();
+  renderAll();
 });

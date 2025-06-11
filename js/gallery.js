@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   const slideshow = document.getElementById('gallerySlideshow');
-  if (!slideshow) return;
+  const dotsContainer = document.querySelector('.gallery__dots');
+  if (!slideshow || !dotsContainer) return;
 
   slideshow.innerHTML = galleryImages.map((img, i) => `
     <div class="gallery__slide${i === 0 ? ' active' : ''}">
@@ -17,30 +18,33 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   `).join('');
 
+  dotsContainer.innerHTML = galleryImages.map((_, i) =>
+    `<span class="gallery__dot${i === 0 ? ' active' : ''}" data-idx="${i}"></span>`
+  ).join('');
+
   const slides = Array.from(slideshow.querySelectorAll('.gallery__slide'));
+  const dots = Array.from(dotsContainer.querySelectorAll('.gallery__dot'));
   let current = 0;
   let timer;
 
-  function showSlide(idx, direction = 1) {
+  function showSlide(idx) {
     slides.forEach((slide, i) => {
       slide.classList.remove('active', 'prev', 'next');
-      if (i === idx) {
-        slide.classList.add('active');
-      } else if (i === (idx - 1 + slides.length) % slides.length) {
-        slide.classList.add('prev');
-      } else if (i === (idx + 1) % slides.length) {
-        slide.classList.add('next');
-      }
+      if (i === idx) slide.classList.add('active');
+      else if (i === (idx - 1 + slides.length) % slides.length) slide.classList.add('prev');
+      else if (i === (idx + 1) % slides.length) slide.classList.add('next');
     });
+    dots.forEach(dot => dot.classList.remove('active'));
+    dots[idx].classList.add('active');
     current = idx;
   }
 
   function nextSlide() {
-    showSlide((current + 1) % slides.length, 1);
+    showSlide((current + 1) % slides.length);
   }
 
   function prevSlide() {
-    showSlide((current - 1 + slides.length) % slides.length, -1);
+    showSlide((current - 1 + slides.length) % slides.length);
   }
 
   function startTimer() {
@@ -52,7 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
     startTimer();
   }
 
-  // Controls
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      showSlide(Number(dot.dataset.idx));
+      resetTimer();
+    });
+  });
+
   document.querySelector('.gallery__btn--next')?.addEventListener('click', () => {
     nextSlide();
     resetTimer();
@@ -62,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
     resetTimer();
   });
 
-  // Start auto sliding
   startTimer();
   showSlide(0);
 });

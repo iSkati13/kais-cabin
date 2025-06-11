@@ -1,11 +1,11 @@
 .contact {
     background-color: var(--accent-color);
     color: var(--main-color);
-    min-height: 120px;      /* Smaller for desktop */
+    min-height: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 12px 0;        /* Less vertical padding */
+    padding: 12px 0;
 }
 
 .contact__content {
@@ -13,8 +13,8 @@
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
-    max-width: 800px;      /* Slightly smaller max width */
-    gap: 20px;             /* Less gap */
+    max-width: 800px;
+    gap: 20px;
     padding: 0 12px;
 }
 
@@ -64,6 +64,7 @@
     height: 22px;
 }
 
+/* --- Section-specific responsive tweaks --- */
 @media (max-width: 900px) {
     .contact__content {
         max-width: 98vw;
