@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startTimer();
   }
 
+  // Dot navigation
   dots.forEach(dot => {
     dot.addEventListener('click', () => {
       showSlide(Number(dot.dataset.idx));
@@ -63,15 +64,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.querySelector('.gallery__btn--next')?.addEventListener('click', () => {
-    nextSlide();
-    resetTimer();
-  });
-  document.querySelector('.gallery__btn--prev')?.addEventListener('click', () => {
-    prevSlide();
-    resetTimer();
-  });
+  // Swipe support for mobile
+  if (galleryImages.length > 1) {
+    let xDown = null;
+    let yDown = null;
+    
+    slideshow.addEventListener('touchstart', (evt) => {
+      xDown = evt.touches[0].clientX;
+      yDown = evt.touches[0].clientY;
+    }, false);
+    
+    slideshow.addEventListener('touchmove', (evt) => {
+      if (!xDown || !yDown) return;
+      
+      const xUp = evt.touches[0].clientX;
+      const yUp = evt.touches[0].clientY;
+      const xDiff = xDown - xUp;
+      const yDiff = yDown - yUp;
+      
+      if (Math.abs(xDiff) > Math.abs(yDiff) && Math.abs(xDiff) > 30) {
+        if (xDiff > 0) nextSlide();
+        else prevSlide();
+        xDown = null;
+        yDown = null;
+        resetTimer();
+      }
+    }, false);
+  }
 
+  // Initialize gallery
   startTimer();
   showSlide(0);
 });

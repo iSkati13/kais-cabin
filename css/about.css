@@ -3,23 +3,26 @@
     flex-direction: row;
     align-items: stretch;
     justify-content: center;
-    height: 80vh;
-    padding: 0 50px;
-    background-color: var(--main-color);
+    min-height: 60vh;
+    padding: 64px 0;
+    background: linear-gradient(135deg, #f8f9f3 70%, var(--main-color) 100%);
     color: var(--accent-color);
 }
 
 .about__content {
     display: flex;
     flex-direction: row;
-    align-items: stretch;
+    align-items: center;
     justify-content: center;
     width: 100%;
-    gap: 50px;
-    height: 100%;
+    gap: 64px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
 }
 
-.about__text, .about__image {
+.about__text,
+.about__image {
     flex: 1;
     max-width: 50%;
     align-self: stretch;
@@ -29,13 +32,30 @@
 }
 
 .about__text h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+    font-size: 2.7rem;
+    font-weight: 800;
+    margin-bottom: 18px;
+    color: var(--accent-color);
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.about__text h2::after {
+    content: '';
+    display: block;
+    margin: 12px 0 0 0;
+    width: 48px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--accent-color);
+    opacity: 0.18;
 }
 
 .about__text p {
-    font-size: 1.2rem;
-    line-height: 1.6;
+    font-size: 1.18rem;
+    line-height: 1.7;
+    color: #666;
+    margin-bottom: 0;
 }
 
 .about__image {
@@ -47,32 +67,38 @@
 .about__photo {
     max-width: 100%;
     height: auto;
-    border-radius: 10px;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 32px rgba(120,129,92,0.10);
+    border: 1.5px solid #eceadf;
+    background: #fff;
 }
 
-/* --- Section-specific responsive tweaks --- */
+/* --- Responsive Design --- */
 @media (max-width: 900px) {
     .about {
-        padding: 0 18px;
-        height: auto;
+        padding: 32px 0;
+        min-height: 0;
     }
     .about__content {
         gap: 24px;
+        padding: 0 10px;
     }
 }
 
 @media (max-width: 768px) {
     .about {
         flex-direction: column;
-        height: auto;
-        padding: 20px;
+        min-height: 0;
+        padding: 20px 0;
     }
     .about__content {
         flex-direction: column;
-        gap: 10px;
+        gap: 18px;
         height: 100%;
+        padding: 0 4vw;
     }
-    .about__text, .about__image {
+    .about__text,
+    .about__image {
         max-width: 100%;
         flex: 1;
         align-self: stretch;
@@ -91,6 +117,8 @@
         font-size: 1rem;
     }
     .about__photo {
-        border-radius: 8px;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(120,129,92,0.10);
+        border-width: 1px;
     }
 }

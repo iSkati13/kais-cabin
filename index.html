@@ -6,17 +6,38 @@
     <title>Kai's Cabin</title>
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Kai's Cabin" />
-    <link rel="manifest" href="site.webmanifest" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="favicon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="favicon/favicon-16x16.png" sizes="16x16">
+    <link rel="shortcut icon" href="favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-title" content="Kai's Cabin">
+    <link rel="manifest" href="favicon/site.webmanifest">
+
+    <!-- Meta Tags for SEO -->
+    <meta name="description" content="Kai's Cabin - A cozy resthouse in Bulacan. Relax, recharge, and make memories with modern amenities, a scenic location, and easy booking.">
+    <meta property="og:title" content="Kai's Cabin - Bulacan Resthouse">
+    <meta property="og:description" content="Relax, recharge, and make memories at Kai's Cabin. Modern amenities, scenic views, and easy booking in Bulacan.">
+    <meta property="og:image" content="https://kaiscabin.com/assets/images/og-image.jpg">
+    <meta property="og:url" content="https://kaiscabin.com/">
+    <meta property="og:type" content="website">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GGSEQRX1YF"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GGSEQRX1YF');
+    </script>
 </head>
-<body class="poppins-font">
+<body>
     <nav class="navbar">
         <div class="navbar__logo">
-            <span class="navbar__logo-text">Kai's Cabin</span>
+            <a href="#hero" class="navbar__logo-link" aria-label="Go to Hero section">
+                <span class="navbar__logo-text">Kai's Cabin</span>
+            </a>
         </div>
         <button class="navbar__toggle" id="navbarToggle" aria-label="Open navigation">
             <span class="navbar__hamburger"></span>
@@ -36,36 +57,36 @@
     <main>
         <!-- Hero Section -->
         <section class="hero" id="hero">
-          <div class="hero__overlay"></div>
-          <div class="hero__content">
-            <img src="assets/icons/logo.png" alt="Kai's Cabin Logo" class="hero__logo" />
-            <h1 class="hero__heading">Your Escape in Bulacan</h1>
-            <p class="hero__tagline">Relax, recharge, and make memories at Kai's Cabin.</p>
-            <a href="#booking" class="btn-primary hero__btn">Book Now</a>
-          </div>
+            <div class="hero__overlay"></div>
+            <div class="hero__content">
+                <div class="hero__content-inner">
+                    <img src="assets/icons/logo.png" alt="Kai's Cabin logo" class="hero__logo" loading="lazy">
+                    <h1 class="hero__heading">Your Escape in Bulacan</h1>
+                    <p class="hero__tagline">Relax, recharge, and make memories at Kai's Cabin.</p>
+                    <a href="#booking" class="btn-primary hero__btn">Book Now</a>
+                </div>
+            </div>
         </section>
 
-        <!-- Separator -->
         <div class="section-separator"></div>
 
         <!-- About Section -->
-        <section id="about" class="about">
+        <section id="about" class="about section-card">
             <div class="about__content">
                 <div class="about__text">
                     <h2>About</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.</p>
                 </div>
                 <div class="about__image">
-                    <img src="assets/images/resthouse2.png" alt="Resthouse Image" class="about__photo">
+                    <img src="assets/images/resthouse2.png" alt="Kai's Cabin resthouse exterior" class="about__photo">
                 </div>
             </div>
         </section>
 
-        <!-- Separator -->
         <div class="section-separator"></div>
 
         <!-- Amenities Section -->
-        <section id="amenities" class="amenities">
+        <section id="amenities" class="amenities section-card">
             <h2 class="amenities__title">Amenities</h2>
             <div class="amenities__categories"></div>
             <span class="amenities__swipe-hint">Swipe for more &rarr;</span>
@@ -74,98 +95,127 @@
             <div class="amenities__carousel-controls"></div>
         </section>
 
-        <!-- Separator -->
         <div class="section-separator"></div>
 
         <!-- Gallery Section -->
-        <section id="gallery" class="gallery">
+        <section id="gallery" class="gallery section-card">
             <h2 class="gallery__title">Gallery</h2>
             <div class="gallery__content">
                 <div class="gallery__slideshow" id="gallerySlideshow"></div>
             </div>
-            <div class="gallery__controls">
-                <button class="gallery__btn gallery__btn--prev" aria-label="Previous">&lt;</button>
-                <button class="gallery__btn gallery__btn--next" aria-label="Next">&gt;</button>
-            </div>
             <div class="gallery__dots"></div>
         </section>
 
-        <!-- Separator -->
         <div class="section-separator"></div>
 
         <!-- Booking Section -->
-        <section id="booking" class="booking">
-          <div class="booking__content">
-            <div class="booking__form">
-              <h2>Book Your Stay</h2>
-              <div class="booking__calendar">
-                <div id="bookingCalendar"></div>
-                <div class="booking__dates">
-                  <label>
-                    Check-in:
-                    <input type="text" id="checkin" readonly>
-                  </label>
-                  <label>
-                    Check-out:
-                    <input type="text" id="checkout" readonly>
-                  </label>
+        <section id="booking" class="booking section-card">
+            <div class="booking__content">
+                <div class="booking__form">
+                    <h2>Book Your Stay</h2>
+                    <div class="booking__calendar">
+                        <div id="bookingCalendar"></div>
+                        <div class="booking__dates">
+                            <label>
+                                Check-in:
+                                <input type="text" id="checkin" readonly>
+                            </label>
+                            <label>
+                                Check-out:
+                                <input type="text" id="checkout" readonly>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="booking__action">
+                        <button id="openModal" class="btn-primary">Reserve Now</button>
+                    </div>
                 </div>
-              </div>
-              <div class="booking__email">
-                <input type="email" placeholder="Your email" />
-                <button type="submit">Submit</button>
-              </div>
-            </div>
-            <div class="booking__location">
-              <div class="booking__map">
-                <h2>Find Us</h2>
-                <div class="map-responsive">
-                  <iframe
-                    src="https://www.google.com/maps?q=Kai's+Cabin,+Pulong+Buhangin,+Santa+Maria,+Bulacan&z=16&output=embed"
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade">
-                  </iframe>
+
+                <!-- Modal Reservation Form -->
+                <div id="reservationModal" class="modal hidden">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3>Reservation Form</h3>
+                        <form action="https://formspree.io/f/manjjvoe" method="POST">
+                            <input type="hidden" name="Check-in" id="modal-checkin">
+                            <input type="hidden" name="Check-out" id="modal-checkout">
+
+                            <label for="first-name">First Name</label>
+                            <input type="text" id="first-name" name="First Name" required>
+
+                            <label for="last-name">Last Name</label>
+                            <input type="text" id="last-name" name="Last Name" required>
+
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="Email" required>
+
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="Phone Number">
+
+                            <label for="address">Where Are You From?</label>
+                            <input type="text" id="address" name="Address" placeholder="e.g. Quezon City, Bulacan" required>
+
+                            <label for="guests">Number of Guests</label>
+                            <input type="number" id="guests" name="Number of Guests" min="1" required>
+
+                            <label for="message">Additional Message</label>
+                            <textarea id="message" name="Message" rows="4" placeholder="Let us know if you have special requests."></textarea>
+
+                            <button type="submit" class="btn-primary">Send Reservation</button>
+                        </form>
+                    </div>
                 </div>
-                <a
-                  href="https://www.google.com/maps/dir/?api=1&destination=Kai's+Cabin,+Pulong+Buhangin,+Santa+Maria,+Bulacan"
-                  target="_blank"
-                  rel="noopener"
-                  class="btn-primary booking__map-btn"
-                >Get Directions</a>
-              </div>
-              <div class="booking__directions">
-                <h3>How to Get Here</h3>
-                <details>
-                    <summary>Private Vehicle (From Manila or North Luzon)</summary>
-                    <ol>
-                        <li>Exit NLEX at Bocaue.</li>
-                        <li>From Manila: Turn right onto Gov. Fortunato Halili Ave.<br>
-                            From North Luzon: Turn left onto Gov. Fortunato Halili Ave.</li>
-                        <li>Continue straight, pass BMMG Hospital, Mateo Hospital.</li>
-                        <li>Turn left onto Santa Maria Bypass Road (Landmarks: PTT, Shakey's, Contis, Peri Peri).</li>
-                        <li>Merge onto Norzagaray - Santa Maria Road (Landmark: Waltermart Sta. Maria).</li>
-                        <li>Go straight, pass Goldilocks, Philhealth, RePhil Gas station.</li>
-                        <li>Turn onto City Land Drive (Landmarks: AllHome, Jollibee, McDo).</li>
-                        <li>Pin Pulong Buhangin Barangay Hall for Waze/Google Maps.</li>
-                        <li>Straight along Cityland Drive, turn left on Lopez Jaena before Divine Mercy chapel to reach Kai’s Cabin.</li>
-                    </ol>
-                </details>
-                <details>
-                    <summary>Commute</summary>
-                    <ol>
-                        <li>Ride a bus at Trinoma P2P terminal bound to Sta. Maria (Precious Grace Transport).</li>
-                        <li>Drop at Sta. Clara or Caypombo, then ride a Jeep/Bus to Norzagaray.</li>
-                        <li>Ask to be dropped at City Land or Pulong Buhangin Barangay Hall.</li>
-                        <li>Ride a trike to Kai’s Cabin.</li>
-                    </ol>
-                </details>
-              </div>
+
+                <div class="booking__location">
+                    <div class="booking__map">
+                        <h2>Find Us</h2>
+                        <div class="map-responsive">
+                            <iframe
+                                src="https://www.google.com/maps?q=Kai's+Cabin,+Pulong+Buhangin,+Santa+Maria,+Bulacan&z=16&output=embed"
+                                allowfullscreen
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                        <a
+                            href="https://www.google.com/maps/dir/?api=1&destination=Kai's+Cabin,+Pulong+Buhangin,+Santa+Maria,+Bulacan"
+                            target="_blank"
+                            rel="noopener"
+                            class="btn-primary booking__map-btn">
+                            Get Directions
+                        </a>
+                    </div>
+                    <div class="booking__directions">
+                        <h3>How to Get Here</h3>
+                        <details>
+                            <summary>Private Vehicle (From Manila or North Luzon)</summary>
+                            <ol>
+                                <li>Exit NLEX at Bocaue.</li>
+                                <li>From Manila: Turn right onto Gov. Fortunato Halili Ave.<br>
+                                    From North Luzon: Turn left onto Gov. Fortunato Halili Ave.</li>
+                                <li>Continue straight, pass BMMG Hospital, Mateo Hospital.</li>
+                                <li>Turn left onto Santa Maria Bypass Road (Landmarks: PTT, Shakey's, Contis, Peri Peri).</li>
+                                <li>Merge onto Norzagaray - Santa Maria Road (Landmark: Waltermart Sta. Maria).</li>
+                                <li>Go straight, pass Goldilocks, Philhealth, RePhil Gas station.</li>
+                                <li>Turn onto City Land Drive (Landmarks: AllHome, Jollibee, McDo).</li>
+                                <li>Pin Pulong Buhangin Barangay Hall for Waze/Google Maps.</li>
+                                <li>Straight along Cityland Drive, turn left on Lopez Jaena before Divine Mercy chapel to reach Kai's Cabin.</li>
+                            </ol>
+                        </details>
+                        <details>
+                            <summary>Commute</summary>
+                            <ol>
+                                <li>Ride a bus at Trinoma P2P terminal bound to Sta. Maria (Precious Grace Transport).</li>
+                                <li>Drop at Sta. Clara or Caypombo, then ride a Jeep/Bus to Norzagaray.</li>
+                                <li>Ask to be dropped at City Land or Pulong Buhangin Barangay Hall.</li>
+                                <li>Ride a trike to Kai's Cabin.</li>
+                            </ol>
+                        </details>
+                    </div>
+                </div>
             </div>
-          </div>
         </section>
 
-        <!-- Separator -->
         <div class="section-separator"></div>
     </main>
 
@@ -176,13 +226,13 @@
                 <h2>Follow Us</h2>
                 <div class="contact__icons">
                     <a href="https://web.facebook.com/kaiscabin" class="contact__icon">
-                        <img src="assets/icons/facebook.png" alt="Facebook Icon">
+                        <img src="assets/icons/facebook.png" alt="Facebook">
                     </a>
                     <a href="https://www.instagram.com/kais.cabin/?utm_source=ig_web_button_share_sheet" class="contact__icon">
-                        <img src="assets/icons/instagram.png" alt="Instagram Icon">
+                        <img src="assets/icons/instagram.png" alt="Instagram">
                     </a>
                     <a href="#" class="contact__icon">
-                        <img src="assets/icons/tiktok.png" alt="Tiktok Icon">
+                        <img src="assets/icons/tiktok.png" alt="TikTok">
                     </a>
                 </div>
             </div>
@@ -190,17 +240,18 @@
                 <h2>Contact Us</h2>
                 <div class="contact__details">
                     <div class="contact__detail">
-                        <img src="assets/icons/email.png" alt="Email Icon">
+                        <img src="assets/icons/email.png" alt="Email">
                         <span>info@kaiscabin.com</span>
                     </div>
                     <div class="contact__detail">
-                        <img src="assets/icons/phone.png" alt="Phone Icon">
+                        <img src="assets/icons/phone.png" alt="Phone">
                         <span>+63 912 345 6789</span>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
+
     <script src="js/navbar.js"></script>
     <script src="js/amenities.js"></script>
     <script src="js/gallery.js"></script>

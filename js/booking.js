@@ -9,8 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedStart = null;
   let selectedEnd = null;
 
+  // Format a JS Date object as "Month DD, YYYY"
   function formatDate(date) {
-    return date ? date.toISOString().split('T')[0] : '';
+    if (!date) return '';
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit'
+    });
   }
 
   function renderCalendar(month = today.getMonth(), year = today.getFullYear()) {
@@ -84,4 +90,75 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   renderCalendar();
+
+  const openModalBtn = document.getElementById("openModal");
+  const modal = document.getElementById("reservationModal");
+  const closeBtn = modal.querySelector(".close");
+
+  openModalBtn.addEventListener("click", () => {
+    const checkin = document.getElementById("checkin").value;
+    const checkout = document.getElementById("checkout").value;
+    document.getElementById("modal-checkin").value = checkin;
+    document.getElementById("modal-checkout").value = checkout;
+    modal.classList.add("show");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modal.classList.remove("show");
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.remove("show");
+    }
+  });
+
+  const form = modal.querySelector("form");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // Optional: Show loading or disable button
+    const submitBtn = form.querySelector("button[type='submit']");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
+
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        modal.classList.remove("show");
+        form.reset();
+        checkinEl.value = '';
+        checkoutEl.value = '';
+        selectedStart = null;
+        selectedEnd = null;
+
+        // Show confirmation message
+        const confirmation = document.createElement("div");
+        confirmation.textContent = "Thank you! Your reservation has been sent.";
+        confirmation.className = "confirmation-popup";
+        document.body.appendChild(confirmation);
+        setTimeout(() => {
+          confirmation.remove();
+        }, 4000);
+      } else {
+        alert("There was a problem sending your reservation. Please try again.");
+      }
+    })
+    .catch(() => {
+      alert("Something went wrong. Please try again.");
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Send Reservation";
+    });
+  });
 });

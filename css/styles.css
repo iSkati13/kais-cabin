@@ -11,17 +11,41 @@
     --main-color: #f5f5dc; /* Parchment/White */
     --secondary-color: #c2b280; /* Sand */
     --accent-color: #77815c; /* Sage */
+    /* New variables for design system */
+    --font-main: 'Poppins', 'Montserrat', sans-serif;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 16px rgba(120,129,92,0.10);
+    --shadow-lg: 0 6px 32px rgba(120,129,92,0.13);
+    --transition: 0.22s cubic-bezier(.4,0,.2,1);
+    --section-padding: 56px;
+    --section-padding-mobile: 28px;
 }
 
 /* Base styles */
 body {
     margin: 0;
-    font-family: 'Montserrat', 'Poppins', sans-serif;
+    font-family: var(--font-main);
     background-color: var(--main-color);
+    color: var(--accent-color);
+    line-height: 1.6;
+    font-size: 1.08rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
+}
+
+img, picture, video {
+    max-width: 100%;
+    display: block;
+    border-radius: var(--radius-sm);
+}
+
+section, .section-separator {
+    margin-bottom: var(--section-padding);
 }
 
 .section-separator {
@@ -30,6 +54,27 @@ html {
     border: none;
     border-top: 2px dashed var(--accent-color);
     opacity: 0.4;
+}
+
+/* Button base style utility */
+.btn-primary {
+    border-radius: 50px;
+    box-shadow: var(--shadow);
+    transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+    font-family: var(--font-main);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Utility for smooth transitions */
+*, *::before, *::after {
+    box-sizing: border-box;
+    transition: background var(--transition), color var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 
 /* ---------- Responsive Media Queries ----------
@@ -48,7 +93,6 @@ html {
     body {
         padding: 0 1.5rem;
     }
-    .amenities__content,
     .contact__content {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -67,7 +111,6 @@ html {
     body {
         padding: 0 2rem;
     }
-    .amenities__content,
     .contact__content {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -77,11 +120,18 @@ html {
 
 /* Mobile fallback: stack sections in 1 column */
 @media (max-width: 600px) {
-    .amenities__content,
     .contact__content {
         display: block;
     }
     body {
         padding: 0;
     }
+}
+
+.section-card {
+    background: transparent;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(120,129,92,0.07);
+    margin: 32px 0;
+    padding: 2.5rem 1.5rem;
 }

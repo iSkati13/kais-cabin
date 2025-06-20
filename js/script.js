@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const target = document.getElementById(targetId);
       if (target) {
         e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth' });
+        const yOffset = -60; // Adjust if you have a sticky navbar height
+        const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
       }
     });
   });

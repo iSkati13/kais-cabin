@@ -12,15 +12,19 @@
 
 .hero__overlay {
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(30, 30, 30, 0.65);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(30,30,30,0.82) 0%, rgba(30,30,30,0.38) 60%, rgba(30,30,30,0.08) 90%, rgba(30,30,30,0.01) 100%);
     z-index: 1;
     pointer-events: none;
 }
 
 .hero__content {
     position: absolute;
-    top: 50%; left: 50%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
     color: var(--main-color);
@@ -32,12 +36,28 @@
     padding: 0 16px;
 }
 
+.hero__content-inner {
+    animation: heroFadeIn 1.1s cubic-bezier(.4,0,.2,1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 18px;
+}
+
+@keyframes heroFadeIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .hero__logo {
     width: 15vw;
     max-width: 180px;
     min-width: 90px;
     height: auto;
-    margin-bottom: 32px;
+    margin-bottom: 0;
+    border-radius: var(--radius);
 }
 
 .hero__heading {
@@ -45,21 +65,23 @@
     font-weight: 800;
     margin: 0 0 10px 0;
     color: #fff;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    text-shadow: 0 3px 16px rgba(0,0,0,0.38), 0 1px 0 rgba(0,0,0,0.13);
     letter-spacing: 1px;
+    font-family: var(--font-main);
 }
 
 .hero__tagline {
     font-size: 2.2rem;
     font-weight: 700;
     text-align: center;
-    margin: 0;
+    margin: 0 0 10px 0;
     color: #fff;
     text-shadow: 0 2px 8px rgba(0,0,0,0.35);
     letter-spacing: 1px;
     line-height: 1.1;
     max-width: 700px;
     white-space: normal;
+    font-family: var(--font-main);
 }
 
 .btn-primary,
@@ -71,10 +93,11 @@
     text-decoration: none;
     font-size: 1.4rem;
     border-radius: 50px;
-    transition: background-color 0.3s ease;
+    transition: background var(--transition), color var(--transition), box-shadow var(--transition);
     font-weight: bold;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-    margin-top: 10px;
+    box-shadow: var(--shadow);
+    margin-top: 0;
+    font-family: var(--font-main);
 }
 
 .btn-primary:hover,
@@ -83,7 +106,7 @@
     color: #fff;
 }
 
-/* --- Section-specific responsive tweaks --- */
+/* --- Responsive Design --- */
 @media (max-width: 768px) {
     .hero__logo {
         width: 40vw;
@@ -105,5 +128,17 @@
     .hero__btn {
         font-size: 1rem;
         padding: 12px 24px;
+    }
+}
+
+@media (min-width: 769px) {
+    .hero__content-inner {
+        gap: 28px;
+    }
+    .hero__heading {
+        margin-bottom: 10px;
+    }
+    .hero__tagline {
+        margin-bottom: 16px;
     }
 }
