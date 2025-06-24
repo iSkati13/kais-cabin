@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const calendarEl = document.getElementById('bookingCalendar');
   const checkinEl = document.getElementById('checkin');
   const checkoutEl = document.getElementById('checkout');
+  const guestsInput = document.getElementById('guests');
+  const decreaseBtn = document.querySelector('.guests-btn--decrease');
+  const increaseBtn = document.querySelector('.guests-btn--increase');
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -95,70 +98,160 @@ document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById("reservationModal");
   const closeBtn = modal.querySelector(".close");
 
+  // Helper to manage body scroll lock for modals
+  let lastScrollY = 0;
+  function updateBodyModalOpen() {
+    const anyModalOpen = document.querySelector('.modal.show');
+    if (anyModalOpen) {
+      if (!document.body.classList.contains('modal-open')) {
+        lastScrollY = window.scrollY;
+        document.body.style.top = `-${lastScrollY}px`;
+      }
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+      window.scrollTo(0, lastScrollY);
+      document.body.style.top = '';
+    }
+  }
+
   openModalBtn.addEventListener("click", () => {
     const checkin = document.getElementById("checkin").value;
     const checkout = document.getElementById("checkout").value;
+    if (!checkin || !checkout) {
+      alert('Please select both check-in and check-out dates before proceeding.');
+      return;
+    }
     document.getElementById("modal-checkin").value = checkin;
     document.getElementById("modal-checkout").value = checkout;
+    document.getElementById("modal-checkin-display").textContent = checkin;
+    document.getElementById("modal-checkout-display").textContent = checkout;
     modal.classList.add("show");
+    updateBodyModalOpen();
   });
 
   closeBtn.addEventListener("click", () => {
     modal.classList.remove("show");
+    updateBodyModalOpen();
   });
 
   window.addEventListener("click", (e) => {
     if (e.target === modal) {
       modal.classList.remove("show");
+      updateBodyModalOpen();
     }
   });
 
-  const form = modal.querySelector("form");
-
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    // Optional: Show loading or disable button
-    const submitBtn = form.querySelector("button[type='submit']");
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Sending...";
-
-    const formData = new FormData(form);
-
-    fetch(form.action, {
-      method: "POST",
-      body: formData,
-      headers: {
-        'Accept': 'application/json'
+  if (guestsInput && decreaseBtn && increaseBtn) {
+    decreaseBtn.addEventListener('click', function() {
+      let value = parseInt(guestsInput.value, 10) || 1;
+      if (value > 1) {
+        guestsInput.value = value - 1;
       }
-    })
-    .then(response => {
-      if (response.ok) {
-        modal.classList.remove("show");
-        form.reset();
-        checkinEl.value = '';
-        checkoutEl.value = '';
-        selectedStart = null;
-        selectedEnd = null;
-
-        // Show confirmation message
-        const confirmation = document.createElement("div");
-        confirmation.textContent = "Thank you! Your reservation has been sent.";
-        confirmation.className = "confirmation-popup";
-        document.body.appendChild(confirmation);
-        setTimeout(() => {
-          confirmation.remove();
-        }, 4000);
-      } else {
-        alert("There was a problem sending your reservation. Please try again.");
-      }
-    })
-    .catch(() => {
-      alert("Something went wrong. Please try again.");
-    })
-    .finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Send Reservation";
     });
-  });
+    increaseBtn.addEventListener('click', function() {
+      let value = parseInt(guestsInput.value, 10) || 1;
+      guestsInput.value = value + 1;
+    });
+    guestsInput.addEventListener('input', function() {
+      if (parseInt(guestsInput.value, 10) < 1 || isNaN(guestsInput.value)) {
+        guestsInput.value = 1;
+      }
+    });
+  }
+
+  // Confirmation modal logic
+  const reservationForm = document.getElementById('reservationForm');
+  const confirmationModal = document.getElementById('confirmationModal');
+  const confirmFields = {
+    checkin: document.getElementById('confirm-checkin'),
+    checkout: document.getElementById('confirm-checkout'),
+    firstName: document.getElementById('confirm-first-name'),
+    lastName: document.getElementById('confirm-last-name'),
+    email: document.getElementById('confirm-email'),
+    phone: document.getElementById('confirm-phone'),
+    address: document.getElementById('confirm-address'),
+    guests: document.getElementById('confirm-guests'),
+    message: document.getElementById('confirm-message'),
+  };
+  const confirmSubmitBtn = document.getElementById('confirmSubmit');
+  const cancelConfirmationBtn = document.getElementById('cancelConfirmation');
+  const confirmationCloseBtn = document.getElementById('confirmationClose');
+
+  if (reservationForm && confirmationModal) {
+    reservationForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Populate confirmation modal
+      confirmFields.checkin.textContent = document.getElementById('modal-checkin').value;
+      confirmFields.checkout.textContent = document.getElementById('modal-checkout').value;
+      confirmFields.firstName.textContent = document.getElementById('first-name').value;
+      confirmFields.lastName.textContent = document.getElementById('last-name').value;
+      confirmFields.email.textContent = document.getElementById('email').value;
+      confirmFields.phone.textContent = document.getElementById('country-code').value + ' ' + document.getElementById('phone').value;
+      confirmFields.address.textContent = document.getElementById('address').value;
+      confirmFields.guests.textContent = document.getElementById('guests').value;
+      confirmFields.message.textContent = document.getElementById('message').value;
+      confirmationModal.classList.add('show');
+      confirmationModal.classList.remove('hidden');
+      updateBodyModalOpen();
+    });
+    // Confirm & Submit
+    confirmSubmitBtn.addEventListener('click', function() {
+      // Optional: Show loading or disable button
+      confirmSubmitBtn.disabled = true;
+      confirmSubmitBtn.textContent = "Sending...";
+      // Gather all form data
+      const formData = new FormData(reservationForm);
+      // Add the country code and phone as a single field for Formspree
+      formData.set('Phone Number', document.getElementById('country-code').value + ' ' + document.getElementById('phone').value);
+      fetch(reservationForm.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          confirmationModal.classList.remove('show');
+          confirmationModal.classList.add('hidden');
+          reservationForm.reset();
+          checkinEl.value = '';
+          checkoutEl.value = '';
+          selectedStart = null;
+          selectedEnd = null;
+          modal.classList.remove("show");
+          updateBodyModalOpen();
+          // Show confirmation message
+          const confirmation = document.createElement("div");
+          confirmation.textContent = "Thank you! Your reservation has been sent.";
+          confirmation.className = "confirmation-popup";
+          document.body.appendChild(confirmation);
+          setTimeout(() => {
+            confirmation.remove();
+          }, 4000);
+        } else {
+          alert("There was a problem sending your reservation. Please try again.");
+        }
+      })
+      .catch(() => {
+        alert("Something went wrong. Please try again.");
+      })
+      .finally(() => {
+        confirmSubmitBtn.disabled = false;
+        confirmSubmitBtn.textContent = "Confirm & Submit";
+      });
+    });
+    // Cancel or close
+    cancelConfirmationBtn.addEventListener('click', function() {
+      confirmationModal.classList.remove('show');
+      confirmationModal.classList.add('hidden');
+      updateBodyModalOpen();
+    });
+    confirmationCloseBtn.addEventListener('click', function() {
+      confirmationModal.classList.remove('show');
+      confirmationModal.classList.add('hidden');
+      updateBodyModalOpen();
+    });
+  }
 });

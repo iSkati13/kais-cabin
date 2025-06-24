@@ -2,40 +2,40 @@ const amenitiesData = [
   {
     category: "Outdoor",
     items: [
-      { icon: "pool.png", label: "Adult Pool", desc: "Relax and swim in our spacious pool." },
-      { icon: "playground.png", label: "Play/Open Area", desc: "Wide space for games and fun." },
-      { icon: "furniture.png", label: "Outdoor Furnitures", desc: "Chill with comfy outdoor seats." },
-      { icon: "camera.png", label: "Insta Spots", desc: "Perfect corners for your IG feed." },
-      { icon: "bbq.png", label: "Outdoor BBQ", desc: "Grill and dine al fresco." }
+      { icon: "pool.png", label: "Adult Pool", desc: "Relax and swim in our spacious pool. Enjoy the cool water and unwind with friends and family all day long. Perfect for both kids and adults, with a safe and clean environment." },
+      { icon: "playground.png", label: "Play/Open Area", desc: "Wide space for games and fun. Let your kids run free or organize group activities. The open area is ideal for sports, picnics, and outdoor gatherings under the sun." },
+      { icon: "furniture.png", label: "Outdoor Furnitures", desc: "Chill with comfy outdoor seats. Our premium furniture is designed for relaxation, whether you want to lounge, read a book, or enjoy a meal outdoors with a scenic view." },
+      { icon: "camera.png", label: "Insta Spots", desc: "Perfect corners for your IG feed. Capture memories in our beautifully designed photo spots, with unique backgrounds and natural lighting for the best pictures." },
+      { icon: "bbq.png", label: "Outdoor BBQ", desc: "Grill and dine al fresco. Host a barbecue party with our complete grilling setup, utensils, and shaded dining area. Enjoy delicious meals in the fresh air with loved ones." }
     ]
   },
   {
     category: "Kitchen",
     items: [
-      { icon: "utensils.png", label: "Kitchen Utensils", desc: "Cookware and tableware provided." },
-      { icon: "fridge.png", label: "Refrigerator", desc: "Keep your food and drinks cool." },
-      { icon: "microwave.png", label: "Microwave Oven", desc: "Heat up meals anytime." },
-      { icon: "kettle.png", label: "Electric Kettle", desc: "Hot water on demand." },
-      { icon: "stove.png", label: "Gas/Induction Stove", desc: "Cook your favorite dishes." },
-      { icon: "rice-cooker.png", label: "Rice Cooker", desc: "Perfect rice every time." },
-      { icon: "ice-maker.png", label: "Ice Maker", desc: "Cold drinks always ready." },
-      { icon: "water-dispenser.png", label: "Water Dispenser", desc: "Clean, cold, and hot water." }
+      { icon: "utensils.png", label: "Kitchen Utensils", desc: "Cookware and tableware provided. We supply everything you need for meal prep, from pots and pans to plates, glasses, and cutlery for a hassle-free stay." },
+      { icon: "fridge.png", label: "Refrigerator", desc: "Keep your food and drinks cool. Our spacious fridge is perfect for storing groceries, leftovers, and beverages, ensuring freshness throughout your visit." },
+      { icon: "microwave.png", label: "Microwave Oven", desc: "Heat up meals anytime. Whether it's a quick snack or a full meal, our microwave is easy to use and always clean for your convenience." },
+      { icon: "kettle.png", label: "Electric Kettle", desc: "Hot water on demand. Make coffee, tea, or instant noodles anytime with our fast-boiling electric kettle, available in the kitchen for your use." },
+      { icon: "stove.png", label: "Gas/Induction Stove", desc: "Cook your favorite dishes. Our modern stove is safe, efficient, and easy to operate, suitable for all your culinary needs during your stay." },
+      { icon: "rice-cooker.png", label: "Rice Cooker", desc: "Perfect rice every time. Enjoy fluffy, perfectly cooked rice with our reliable rice cooker, a must-have for every meal at the cabin." },
+      { icon: "ice-maker.png", label: "Ice Maker", desc: "Cold drinks always ready. Our ice maker ensures you have plenty of ice for refreshments, cocktails, and more, especially on hot days." },
+      { icon: "water-dispenser.png", label: "Water Dispenser", desc: "Clean, cold, and hot water. Stay hydrated with our easy-to-use dispenser, providing safe drinking water for all guests at any time." }
     ]
   },
   {
     category: "Entertainment",
     items: [
-      { icon: "wifi.png", label: "Wifi", desc: "Fast and free internet." },
-      { icon: "karaoke.png", label: "Karaoke", desc: "Sing your heart out!" },
-      { icon: "tv.png", label: "Smart TV", desc: "Netflix and chill." },
-      { icon: "boardgame.png", label: "Game Boards", desc: "Fun for all ages." }
+      { icon: "wifi.png", label: "Wifi", desc: "Fast and free internet. Stay connected for work or play, stream your favorite shows, or share your vacation moments online with reliable wifi." },
+      { icon: "karaoke.png", label: "Karaoke", desc: "Sing your heart out! Our karaoke system is loaded with thousands of songs, perfect for parties and family fun nights at the cabin." },
+      { icon: "tv.png", label: "Smart TV", desc: "Netflix and chill. Enjoy a wide selection of streaming services, movies, and shows on our large smart TV, complete with surround sound." },
+      { icon: "boardgame.png", label: "Game Boards", desc: "Fun for all ages. Choose from a variety of classic and modern board games, ideal for bonding and laughter with friends and family." }
     ]
   },
   {
     category: "Bath",
     items: [
-      { icon: "shower.png", label: "Hot/Cold Shower", desc: "Refresh anytime." },
-      { icon: "bathtub.png", label: "Bath Tub", desc: "Soak and relax." }
+      { icon: "shower.png", label: "Hot/Cold Shower", desc: "Refresh anytime. Our showers offer both hot and cold water, ensuring a comfortable experience no matter the weather or time of day." },
+      { icon: "bathtub.png", label: "Bath Tub", desc: "Soak and relax. Unwind in our clean, spacious bathtub, perfect for a soothing soak after a long day of activities at the cabin." }
     ]
   }
 ];
