@@ -335,7 +335,7 @@
 
 .footer__business-details {
     display: flex;
-    flex-direction: column;
+        flex-direction: column;
     gap: var(--space-1);
 }
 
@@ -401,11 +401,11 @@
     width: 100%;
     gap: 10px;
     align-items: stretch;
-}
+    }
 
 .subscribe-form input[type="email"],
 .subscribe-form button {
-    width: 100%;
+        width: 100%;
     min-width: 0;
     max-width: 100%;
     border-radius: 24px;
@@ -422,7 +422,7 @@
 .subscribe-form input[type="email"]:focus {
     border: 1.5px solid var(--brand-primary);
     background: #fff;
-}
+    }
 
 .subscribe-form button {
     border: 1.5px solid var(--brand-primary);

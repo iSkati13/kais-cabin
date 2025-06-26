@@ -48,11 +48,17 @@
 }
 
 .about__text p {
-    font-size: var(--text-lg);
-    line-height: 1.7;
+    font-size: var(--text-base);
+    line-height: 1.45;
     color: var(--gray-600);
     margin: 0;
     font-weight: 400;
+    text-align: justify;
+    text-indent: 2em;
+}
+
+.about__text p + p {
+    margin-top: var(--space-3);
 }
 
 .about__features {
@@ -153,11 +159,18 @@
     opacity: 0.15;
     z-index: 1;
     transition: all var(--transition-normal);
-}
+    }
 
 .about__image:hover::before {
     transform: translate(10px, 10px);
     opacity: 0.2;
+    }
+
+.about__right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-8);
 }
 
 /* Responsive Design */
@@ -290,6 +303,14 @@
     
     .about__photo {
         max-width: 550px;
+    }
+}
+
+@media (max-width: 600px) {
+    .about__text p {
+        max-width: 92vw;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 

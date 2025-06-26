@@ -33,6 +33,11 @@
         gtag('js', new Date());
         gtag('config', 'G-GGSEQRX1YF');
     </script>
+
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <!-- Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -40,6 +45,7 @@
             <div class="navbar__logo">
                 <a href="#hero" class="navbar__logo-link" aria-label="Go to Hero section">
                     <span class="navbar__logo-text">Kai's Cabin</span>
+                    <span class="navbar__logo-tagline">Private Resort and Event's Place</span>
                 </a>
             </div>
             <button class="navbar__toggle" id="navbarToggle" aria-label="Open navigation">
@@ -65,7 +71,7 @@
                 <div class="hero__content">
                     <div class="hero__content-inner">
                         <img src="assets/icons/logo.png" alt="Kai's Cabin logo" class="hero__logo" loading="lazy">
-                        <h1 class="hero__heading">Your Escape in Bulacan</h1>
+                        <h1 class="hero__heading">The Perfect Family Getaway in Bulacan</h1>
                         <p class="hero__tagline">Relax, recharge, and make memories at Kai's Cabin.</p>
                         <a href="#booking" class="btn hero__btn">Book Now</a>
                     </div>
@@ -83,16 +89,21 @@
                     <div class="about__content">
                         <div class="about__text">
                             <h2>About Kai's Cabin</h2>
-                            <p>Experience the perfect blend of comfort and nature at Kai's Cabin. Our resthouse offers a serene escape from the hustle and bustle of city life, providing modern amenities in a peaceful setting.</p>
+                            <p>Looking for the perfect spot to reconnect with your favorite people? Welcome to Kai's Cabin, a private resort nestled right here in Bulacan, designed for memorable moments with both family and friends. We get it – life gets busy, and finding a place that caters to everyone can be a challenge. That's exactly why we created Kai's Cabin!</p>
+                            <p>Whether it's a fun-filled family reunion, a much-needed barkada escape, or a cozy weekend with loved ones, our resort offers the ideal blend of relaxation and recreation. You'll find comfortable spaces to unwind, refreshing pool to splash in, and plenty of room for laughter, games, and shared meals. We've built Kai's Cabin to be your home away from home, where every visit strengthens bonds and creates lasting happy memories. Come discover your next favorite gathering place!</p>
+                        </div>
+                        <div class="about__right">
+                            <div class="about__image">
+                                <img src="assets/images/resthouse2.png" alt="Kai's Cabin resthouse exterior" class="about__photo">
+                            </div>
                             <div class="about__features">
                                 <div class="about__feature">Peaceful location with scenic views</div>
-                                <div class="about__feature">Modern amenities and comfortable accommodations</div>
-                                <div class="about__feature">Perfect for families and groups</div>
-                                <div class="about__feature">Easy booking and flexible check-in</div>
+                                <div class="about__feature">Modern amenities & comfy accommodations</div>
+                                <div class="about__feature">Spacious for families & barkada groups</div>
+                                <div class="about__feature">Private pool for exclusive use</div>
+                                <div class="about__feature">Indoor & outdoor dining areas</div>
+                                <div class="about__feature">Secure, gated property with parking</div>
                             </div>
-                        </div>
-                        <div class="about__image">
-                            <img src="assets/images/resthouse2.png" alt="Kai's Cabin resthouse exterior" class="about__photo">
                         </div>
                     </div>
                 </div>
@@ -124,6 +135,9 @@
                     <div class="gallery__dots"></div>
                 </div>
             </section>
+
+            <div id="gallerySlideshow"></div>
+            <div class="gallery__dots"></div>
 
             <div class="section-separator"></div>
 
@@ -166,20 +180,20 @@
                                     </div>
                                 </div>
                                 <h3>Reservation Form</h3>
-                                <form id="reservationForm" action="https://formspree.io/f/manjjvoe" method="POST">
-                                    <input type="hidden" name="Check-in" id="modal-checkin">
-                                    <input type="hidden" name="Check-out" id="modal-checkout">
+                                <form id="reservationForm" autocomplete="off">
+                                    <input type="hidden" name="checkin" id="modal-checkin">
+                                    <input type="hidden" name="checkout" id="modal-checkout">
                                     <div class="form-group">
                                         <label for="first-name">First Name</label>
-                                        <input type="text" id="first-name" name="First Name" required>
+                                        <input type="text" id="first-name" name="firstName" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="last-name">Last Name</label>
-                                        <input type="text" id="last-name" name="Last Name" required>
+                                        <input type="text" id="last-name" name="lastName" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="email">Email Address</label>
-                                        <input type="email" id="email" name="Email" required>
+                                        <input type="email" id="email" name="email" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="phone">Phone Number</label>
@@ -193,24 +207,24 @@
                                                 <option value="+65">🇸🇬 +65</option>
                                                 <option value="+91">🇮🇳 +91</option>
                                             </select>
-                                            <input type="tel" id="phone" name="Phone Number" pattern="[0-9]{6,15}" inputmode="numeric" maxlength="15" placeholder="9123456789" required>
+                                            <input type="tel" id="phone" name="phone" pattern="[0-9]{6,15}" inputmode="numeric" maxlength="15" placeholder="9123456789" required>
                                         </div>
                                     </div>
                                     <div class="form-group full-width">
                                         <label for="address">Where Are You From?</label>
-                                        <input type="text" id="address" name="Address" placeholder="e.g. Quezon City, Bulacan" required>
+                                        <input type="text" id="address" name="address" placeholder="e.g. Quezon City, Bulacan" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="guests">Number of Guests</label>
                                         <div class="guests-input-group">
                                             <button type="button" class="guests-btn guests-btn--decrease" aria-label="Decrease guests">-</button>
-                                            <input type="number" id="guests" name="Number of Guests" min="1" value="13" required>
+                                            <input type="number" id="guests" name="guests" min="1" value="13" required>
                                             <button type="button" class="guests-btn guests-btn--increase" aria-label="Increase guests">+</button>
                                         </div>
                                     </div>
                                     <div class="form-group full-width">
                                         <label for="message">Additional Message</label>
-                                        <textarea id="message" name="Message" rows="4" placeholder="Let us know if you have special requests."></textarea>
+                                        <textarea id="message" name="note" rows="4" placeholder="Let us know if you have special requests."></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Send Reservation</button>
                                 </form>
@@ -235,7 +249,9 @@
                                 </ul>
                                 <div class="confirmation-actions">
                                     <button id="confirmSubmit" class="btn btn-primary" type="submit">Confirm & Submit</button>
-                                    <button id="cancelConfirmation" class="btn btn-secondary" type="button">Cancel</button>
+                                    <div class="confirmation-cancel-wrap">
+                                        <button id="cancelConfirmation" class="btn btn-secondary" type="button">Cancel</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -415,8 +431,7 @@
 
     <script src="js/navbar.js"></script>
     <script src="js/amenities.js"></script>
-    <script src="js/gallery.js"></script>
-    <script src="js/booking.js"></script>
-    <script src="js/script.js"></script>
+    <script type="module" src="js/gallery.js"></script>
+    <script type="module" src="js/booking.js"></script>
 </body>
 </html>

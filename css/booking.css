@@ -542,6 +542,14 @@ body.modal-open {
     font-weight: 600;
 }
 
+#bookingCalendar .calendar-date.blocked {
+    background: #ffb3b3 !important; /* light red */
+    color: #fff !important;
+    cursor: not-allowed;
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
 /* --- Confirmation Popup --- */
 .confirmation-popup {
     position: fixed;
@@ -833,7 +841,7 @@ body.modal-open {
     flex-direction: column;
     align-items: center;
     min-width: 120px;
-}
+    }
 
 .modal-date-label {
     font-size: 0.98rem;
@@ -1116,6 +1124,7 @@ body.modal-open {
     gap: 18px;
     justify-content: center;
     margin-top: 18px;
+    align-items: center;
 }
 #confirmationModal .close {
     position: absolute;
@@ -1140,4 +1149,31 @@ body.modal-open {
     color: var(--brand-primary);
     background: rgba(93, 138, 74, 0.1);
     transform: scale(1.1);
+}
+.confirmation-actions .btn-primary,
+.confirmation-actions .btn-secondary {
+    min-width: 140px;
+    padding: 14px 36px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-radius: 50px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    vertical-align: middle;
+    margin: 0;
+}
+
+.confirmation-cancel-wrap {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+}
+
+@media (min-width: 601px) {
+  .confirmation-cancel-wrap {
+    margin-top: 24px;
+  }
 }

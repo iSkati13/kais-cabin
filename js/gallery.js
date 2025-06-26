@@ -1,10 +1,29 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const galleryImages = [
-    { src: "assets/images/resthouse.png", alt: "Resthouse Image 1" },
-    { src: "assets/images/resthouse2.png", alt: "Resthouse Image 2" },
-    { src: "assets/images/resthouse3.png", alt: "Resthouse Image 3" },
-    // Add more images here!
-  ];
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCVnzUCtkX-24cOBOZoJ2FyZJHEIGAp-8s",
+  authDomain: "kais-cabin-admin.firebaseapp.com",
+  projectId: "kais-cabin-admin",
+  storageBucket: "kais-cabin-admin.firebasestorage.app",
+  messagingSenderId: "425186271736",
+  appId: "1:425186271736:web:fb17e1d9752047077e360d",
+  measurementId: "G-6XC2710XE3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function fetchGalleryImages() {
+  // Order by createdAt if you want the same order as your admin
+  const q = query(collection(db, "gallery"), orderBy("createdAt", "asc"));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.map(doc => doc.data());
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const galleryImages = await fetchGalleryImages();
+  console.log(galleryImages);
 
   const slideshow = document.getElementById('gallerySlideshow');
   const dotsContainer = document.querySelector('.gallery__dots');
@@ -13,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   slideshow.innerHTML = galleryImages.map((img, i) => `
     <div class="gallery__slide${i === 0 ? ' active' : ''}">
       <div class="gallery__holder">
-        <img src="${img.src}" alt="${img.alt}" class="gallery__image">
+        <img src="${img.imageUrl || img.imgUrl || img.src || ''}" alt="${img.alt || 'Gallery Image'}" class="gallery__image">
       </div>
     </div>
   `).join('');
@@ -35,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (i === (idx + 1) % slides.length) slide.classList.add('next');
     });
     dots.forEach(dot => dot.classList.remove('active'));
-    dots[idx].classList.add('active');
+    if (dots[idx]) dots[idx].classList.add('active');
     current = idx;
   }
 

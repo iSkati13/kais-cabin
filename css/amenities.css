@@ -142,9 +142,10 @@
 /* --- Carousel --- */
 .amenities__carousel {
     display: flex;
-    overflow: visible;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
     min-height: 340px;
     margin-bottom: 18px;
     position: relative;
@@ -308,6 +309,14 @@
 .amenities__carousel-btn:hover {
     background: var(--brand-primary);
     color: var(--white);
+}
+
+.amenities__carousel-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--gray-200);
+  color: var(--gray-500);
+  box-shadow: none;
 }
 
 /* --- Swipe Hint --- */

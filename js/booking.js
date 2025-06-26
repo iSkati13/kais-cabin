@@ -1,4 +1,58 @@
-document.addEventListener('DOMContentLoaded', () => {
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCVnzUCtkX-24cOBOZoJ2FyZJHEIGAp-8s",
+  authDomain: "kais-cabin-admin.firebaseapp.com",
+  projectId: "kais-cabin-admin",
+  storageBucket: "kais-cabin-admin.firebasestorage.app",
+  messagingSenderId: "425186271736",
+  appId: "1:425186271736:web:fb17e1d9752047077e360d",
+  measurementId: "G-6XC2710XE3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Fetch all approved reservations from Firestore
+async function fetchApprovedReservations() {
+  const q = query(collection(db, "reservations"), where("approved", "==", true));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => doc.data());
+}
+
+// Build a Set of all blocked dates (YYYY-MM-DD)
+function getBlockedDateSet(reservations) {
+  const blocked = new Set();
+  reservations.forEach(res => {
+    if (!res.checkin || !res.checkout) return;
+    const start = new Date(res.checkin);
+    const end = new Date(res.checkout);
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      blocked.add(d.toISOString().slice(0, 10));
+    }
+  });
+  return blocked;
+}
+
+// Helper to check if a date is blocked
+function isDateBlocked(date, blockedDates) {
+  const iso = date.toISOString().slice(0, 10);
+  return blockedDates.has(iso);
+}
+
+// Helper to check if a range overlaps with blocked dates
+function isRangeBlocked(start, end, blockedDates) {
+  for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+    const iso = d.toISOString().slice(0, 10);
+    if (blockedDates.has(iso)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
   const calendarEl = document.getElementById('bookingCalendar');
   const checkinEl = document.getElementById('checkin');
   const checkoutEl = document.getElementById('checkout');
@@ -12,7 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedStart = null;
   let selectedEnd = null;
 
-  // Format a JS Date object as "Month DD, YYYY"
+  // Fetch approved reservations and build blocked dates set
+  const reservations = await fetchApprovedReservations();
+  const blockedDates = getBlockedDateSet(reservations);
+
   function formatDate(date) {
     if (!date) return '';
     return date.toLocaleDateString('en-US', {
@@ -43,17 +100,19 @@ document.addEventListener('DOMContentLoaded', () => {
         html += `<span class="calendar-date muted"></span>`;
       } else {
         const isPast = date < today;
+        const isBlocked = isDateBlocked(date, blockedDates);
         const isSelected = selectedStart && formatDate(date) === formatDate(selectedStart);
         const isInRange = selectedStart && selectedEnd && date > selectedStart && date < selectedEnd;
         const isEnd = selectedEnd && formatDate(date) === formatDate(selectedEnd);
         const classes = [
           'calendar-date',
           isPast ? 'muted' : '',
+          isBlocked ? 'blocked' : '',
           isSelected ? 'selected' : '',
           isInRange ? 'in-range' : '',
           isEnd ? 'selected' : ''
         ].filter(Boolean).join(' ');
-        html += `<span class="${classes}" data-date="${formatDate(date)}" ${isPast ? 'tabindex="-1"' : 'tabindex="0"'}>${day}</span>`;
+        html += `<span class="${classes}" data-date="${formatDate(date)}" ${(isPast || isBlocked) ? 'tabindex="-1"' : 'tabindex="0"'}>${day}</span>`;
         day++;
       }
     }
@@ -69,13 +128,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Date selection
-    calendarEl.querySelectorAll('.calendar-date:not(.muted)').forEach(el => {
+    calendarEl.querySelectorAll('.calendar-date:not(.muted):not(.blocked)').forEach(el => {
       el.addEventListener('click', () => {
         const date = new Date(el.dataset.date);
         if (!selectedStart || (selectedStart && selectedEnd)) {
           selectedStart = date;
           selectedEnd = null;
         } else if (date > selectedStart) {
+          // Check for overlap
+          if (isRangeBlocked(selectedStart, date, blockedDates)) {
+            alert('Selected range overlaps with a blocked date. Please choose another range.');
+            selectedStart = null;
+            selectedEnd = null;
+            updateFields();
+            renderCalendar(month, year);
+            return;
+          }
           selectedEnd = date;
         } else {
           selectedStart = date;
@@ -180,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (reservationForm && confirmationModal) {
     reservationForm.addEventListener('submit', function(e) {
-      e.preventDefault();
+    e.preventDefault();
       // Populate confirmation modal
       confirmFields.checkin.textContent = document.getElementById('modal-checkin').value;
       confirmFields.checkout.textContent = document.getElementById('modal-checkout').value;
@@ -196,51 +264,55 @@ document.addEventListener('DOMContentLoaded', () => {
       updateBodyModalOpen();
     });
     // Confirm & Submit
-    confirmSubmitBtn.addEventListener('click', function() {
-      // Optional: Show loading or disable button
+    confirmSubmitBtn.addEventListener('click', async function() {
       confirmSubmitBtn.disabled = true;
       confirmSubmitBtn.textContent = "Sending...";
+
       // Gather all form data
       const formData = new FormData(reservationForm);
-      // Add the country code and phone as a single field for Formspree
-      formData.set('Phone Number', document.getElementById('country-code').value + ' ' + document.getElementById('phone').value);
-      fetch(reservationForm.action, {
-        method: "POST",
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        }
-      })
-      .then(response => {
-        if (response.ok) {
-          confirmationModal.classList.remove('show');
-          confirmationModal.classList.add('hidden');
-          reservationForm.reset();
-          checkinEl.value = '';
-          checkoutEl.value = '';
-          selectedStart = null;
-          selectedEnd = null;
-          modal.classList.remove("show");
-          updateBodyModalOpen();
-          // Show confirmation message
-          const confirmation = document.createElement("div");
-          confirmation.textContent = "Thank you! Your reservation has been sent.";
-          confirmation.className = "confirmation-popup";
-          document.body.appendChild(confirmation);
-          setTimeout(() => {
-            confirmation.remove();
-          }, 4000);
-        } else {
-          alert("There was a problem sending your reservation. Please try again.");
-        }
-      })
-      .catch(() => {
-        alert("Something went wrong. Please try again.");
-      })
-      .finally(() => {
+
+      // Build the reservation object
+      const reservation = {
+        checkin: formData.get('checkin'),
+        checkout: formData.get('checkout'),
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
+        email: formData.get('email'),
+        phone: document.getElementById('country-code').value + ' ' + document.getElementById('phone').value,
+        address: formData.get('address'),
+        guests: formData.get('guests'),
+        note: formData.get('note'),
+        approved: false,
+        createdAt: serverTimestamp()
+      };
+
+      try {
+        await addDoc(collection(db, "reservations"), reservation);
+
+        // Success UI
+        confirmationModal.classList.remove('show');
+        confirmationModal.classList.add('hidden');
+        reservationForm.reset();
+        checkinEl.value = '';
+        checkoutEl.value = '';
+        selectedStart = null;
+        selectedEnd = null;
+        modal.classList.remove("show");
+        updateBodyModalOpen();
+        // Show confirmation message
+        const confirmation = document.createElement("div");
+        confirmation.textContent = "Thank you! Your reservation has been sent.";
+        confirmation.className = "confirmation-popup";
+        document.body.appendChild(confirmation);
+        setTimeout(() => {
+          confirmation.remove();
+        }, 4000);
+      } catch (error) {
+        alert("There was a problem sending your reservation. Please try again.");
+      } finally {
         confirmSubmitBtn.disabled = false;
         confirmSubmitBtn.textContent = "Confirm & Submit";
-      });
+      }
     });
     // Cancel or close
     cancelConfirmationBtn.addEventListener('click', function() {
@@ -252,6 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
       confirmationModal.classList.remove('show');
       confirmationModal.classList.add('hidden');
       updateBodyModalOpen();
-    });
+  });
   }
 });
