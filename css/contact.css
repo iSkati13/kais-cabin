@@ -145,6 +145,7 @@
 .contact__detail:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(4px);
 }
 
 .contact__detail img {
@@ -210,15 +211,6 @@
 @media (min-width: 1025px) {
     .contact__content {
         gap: var(--space-20);
-    }
-    
-    .contact__icon {
-        width: 56px;
-        height: 56px;
-    }
-    
-    .contact__icon i {
-        font-size: 24px;
     }
 }
 
@@ -318,6 +310,10 @@
     margin: 0 0 var(--space-2) 0;
 }
 
+.footer__business-info {
+    margin-top: var(--space-4);
+}
+
 .footer__business-info p {
     font-size: var(--text-xs);
     color: var(--gray-500);
@@ -325,6 +321,10 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
+}
+
+.footer__business-info p:last-child {
+    margin-bottom: 0;
 }
 
 .footer__business-info i {
@@ -548,17 +548,30 @@
     }
 }
 
+/* Extra wide screens for better content distribution */
+@media (min-width: 1400px) {
+    .footer__main {
+        gap: var(--space-20);
+        padding: 0 var(--space-12);
+    }
+    
+    .footer__bottom {
+        gap: var(--space-16);
+        padding: 0 var(--space-12);
+    }
+}
+
 .subscribe-form {
     display: flex;
     flex-direction: column;
     width: 100%;
     gap: 10px;
     align-items: stretch;
-    }
+}
 
 .subscribe-form input[type="email"],
 .subscribe-form button {
-        width: 100%;
+    width: 100%;
     min-width: 0;
     max-width: 100%;
     border-radius: 24px;
@@ -575,7 +588,8 @@
 .subscribe-form input[type="email"]:focus {
     border: 1.5px solid var(--brand-primary);
     background: #fff;
-    }
+    outline: none;
+}
 
 .subscribe-form button {
     border: 1.5px solid var(--brand-primary);
@@ -584,36 +598,14 @@
     font-weight: 700;
     margin-top: 0;
     transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    cursor: pointer;
 }
 
 .subscribe-form button:hover {
     background: var(--brand-secondary);
     box-shadow: 0 4px 16px rgba(93,138,74,0.13);
-    transform: translateY(-2px) scale(1.03);
+    transform: scale(1.02);
     color: var(--white);
-}
-
-@media (min-width: 601px) {
-    .subscribe-form {
-        flex-direction: row;
-        gap: 0;
-        align-items: stretch;
-    }
-    .subscribe-form input[type="email"] {
-        border-radius: 24px 0 0 24px;
-        border-right: none;
-        box-shadow: 0 1px 6px rgba(93,138,74,0.06);
-    }
-    .subscribe-form button {
-        border-radius: 0 24px 24px 0;
-        border-left: none;
-        min-width: 100px;
-        max-width: 140px;
-        white-space: nowrap;
-        box-shadow: 0 2px 8px rgba(93,138,74,0.10);
-        display: flex;
-        align-items: center;
-    }
 }
 
 .contact__subscribe-icon {
@@ -655,6 +647,29 @@
     .subscribe-form button:hover {
         background: var(--brand-secondary);
         box-shadow: 0 4px 16px rgba(93,138,74,0.13);
-        transform: translateY(-2px) scale(1.03);
+        transform: translateY(-2px);
+    }
+}
+
+@media (min-width: 601px) {
+    .subscribe-form {
+        flex-direction: row;
+        gap: 0;
+        align-items: stretch;
+    }
+    .subscribe-form input[type="email"] {
+        border-radius: 24px 0 0 24px;
+        border-right: none;
+        box-shadow: 0 1px 6px rgba(93,138,74,0.06);
+    }
+    .subscribe-form button {
+        border-radius: 0 24px 24px 0;
+        border-left: none;
+        min-width: 100px;
+        max-width: 140px;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(93,138,74,0.10);
+        display: flex;
+        align-items: center;
     }
 }

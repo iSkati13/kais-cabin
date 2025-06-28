@@ -268,7 +268,7 @@
     
     .hero__content-inner {
         gap: var(--space-4);
-        margin-bottom: var(--space-8);
+        margin-bottom: var(--space-6);
     }
     
     .hero__logo {
@@ -295,9 +295,8 @@
     }
     
     .hero__scroll-indicator {
-        bottom: var(--space-6);
+        bottom: var(--space-4);
         font-size: var(--text-xs);
-        margin-top: var(--space-4);
     }
     
     .hero__heading-line1 {
@@ -381,10 +380,36 @@
 /* Responsive: Move up or hide scroll indicator if screen is short */
 @media (max-height: 700px) {
   .hero__scroll-indicator {
-    display: none;
+    bottom: 20px;
+    font-size: var(--text-xs);
   }
 }
 @media (max-height: 600px) {
+  .hero__scroll-indicator {
+    bottom: 15px;
+    font-size: var(--text-xs);
+  }
+}
+@media (max-height: 580px) {
+  .hero__scroll-indicator {
+    display: none;
+  }
+}
+
+/* Additional adjustments for very short screens */
+@media (max-height: 650px) and (max-width: 768px) {
+  .hero__content-inner {
+    margin-bottom: var(--space-4);
+  }
+  
+  .hero__scroll-indicator {
+    bottom: 10px;
+    font-size: var(--text-xs);
+  }
+}
+
+/* Hide scroll indicator on very short mobile screens */
+@media (max-height: 580px) and (max-width: 768px) {
   .hero__scroll-indicator {
     display: none;
   }
