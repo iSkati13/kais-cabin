@@ -219,8 +219,13 @@ function validateFormData(formData) {
     if (!data.phone || !data.phone.trim()) errors.push('Phone is required');
     if (!data.address || !data.address.trim()) errors.push('Address is required');
     if (!data.guests || !data.guests.trim()) errors.push('Number of guests is required');
-    if (!data.checkin || !data.checkin.trim()) errors.push('Check-in date is required');
-    if (!data.checkout || !data.checkout.trim()) errors.push('Check-out date is required');
+    
+    // Check for checkin/checkout in hidden fields
+    const modalCheckin = document.getElementById('modal-checkin').value;
+    const modalCheckout = document.getElementById('modal-checkout').value;
+    
+    if (!modalCheckin || !modalCheckin.trim()) errors.push('Check-in date is required');
+    if (!modalCheckout || !modalCheckout.trim()) errors.push('Check-out date is required');
     
     // Validate email format
     if (data.email && !validateEmail(data.email)) {
@@ -251,26 +256,34 @@ function showErrorMessage(message) {
     alert('Error: ' + message); // Simple alert for now, can be enhanced with a modal
 }
 
-// Reset form
+// Reset form (simplified version that doesn't depend on calendar variables)
 function resetForm() {
     const form = document.getElementById('reservationForm');
     if (form) {
         form.reset();
     }
     
-    // Reset calendar selection
-    selectedStart = null;
-    selectedEnd = null;
-    selectionMode = 'checkin';
-    updateFields();
-    renderCalendar();
-    
-    // Close modals
+    // Close all modals
     const reservationModal = document.getElementById('reservationModal');
     const confirmationModal = document.getElementById('confirmationModal');
-    if (reservationModal) reservationModal.classList.remove('show');
-    if (confirmationModal) confirmationModal.classList.remove('show');
-    updateBodyModalOpen();
+    
+    if (reservationModal) {
+        reservationModal.classList.remove('show');
+        reservationModal.classList.add('hidden');
+    }
+    if (confirmationModal) {
+        confirmationModal.classList.remove('show');
+        confirmationModal.classList.add('hidden');
+    }
+    
+    // Update body scroll
+    document.body.classList.remove('modal-open');
+    document.body.style.top = '';
+    
+    // Reload the page to reset calendar state
+    setTimeout(() => {
+        window.location.reload();
+    }, 1000);
 }
 
 // Get client IP (simplified version)
@@ -623,41 +636,71 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (reservationForm && confirmationModal) {
     reservationForm.addEventListener('submit', function(e) {
-    e.preventDefault();
+      e.preventDefault();
+      
+      // Check if dates are selected
+      const checkin = document.getElementById('modal-checkin').value;
+      const checkout = document.getElementById('modal-checkout').value;
+      
+      if (!checkin || !checkout) {
+        showErrorMessage('Please select both check-in and check-out dates before proceeding.');
+        return;
+      }
+      
       // Populate confirmation modal
-      confirmFields.checkin.textContent = document.getElementById('modal-checkin').value;
-      confirmFields.checkout.textContent = document.getElementById('modal-checkout').value;
+      confirmFields.checkin.textContent = checkin;
+      confirmFields.checkout.textContent = checkout;
       confirmFields.firstName.textContent = document.getElementById('first-name').value;
       confirmFields.lastName.textContent = document.getElementById('last-name').value;
       confirmFields.email.textContent = document.getElementById('email').value;
       confirmFields.phone.textContent = document.getElementById('country-code').value + ' ' + document.getElementById('phone').value;
       confirmFields.address.textContent = document.getElementById('address').value;
       confirmFields.guests.textContent = document.getElementById('guests').value;
-      confirmFields.message.textContent = document.getElementById('message').value;
+      confirmFields.message.textContent = document.getElementById('message').value || 'No additional message';
+      
+      // Show confirmation modal
       confirmationModal.classList.add('show');
       confirmationModal.classList.remove('hidden');
       updateBodyModalOpen();
     });
+    
     // Confirm & Submit
     confirmSubmitBtn.addEventListener('click', async function() {
+      // Prevent multiple clicks
+      if (confirmSubmitBtn.disabled) return;
+      
       confirmSubmitBtn.disabled = true;
       confirmSubmitBtn.textContent = "Sending...";
 
       try {
-        // Gather all form data
-        const formData = new FormData(reservationForm);
+        // Get form data directly from form elements
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const guests = document.getElementById('guests').value.trim();
+        const checkin = document.getElementById('modal-checkin').value.trim();
+        const checkout = document.getElementById('modal-checkout').value.trim();
+        const note = document.getElementById('message').value.trim();
         
-        // Convert FormData to object for validation
-        const formDataObj = Object.fromEntries(formData);
+        // Manual validation first
+        const validationErrors = [];
+        if (!firstName) validationErrors.push('First name is required');
+        if (!lastName) validationErrors.push('Last name is required');
+        if (!email) validationErrors.push('Email is required');
+        if (!phone) validationErrors.push('Phone is required');
+        if (!address) validationErrors.push('Address is required');
+        if (!guests) validationErrors.push('Number of guests is required');
+        if (!checkin) validationErrors.push('Check-in date is required');
+        if (!checkout) validationErrors.push('Check-out date is required');
+        
+        if (validationErrors.length > 0) {
+          throw new Error(validationErrors.join('\n'));
+        }
         
         // Security checks
         checkRateLimit();
-        
-        // Validate form data
-        const errors = validateFormData(formData);
-        if (errors.length > 0) {
-          throw new Error(errors.join('\n'));
-        }
         
         // Get reCAPTCHA token
         const recaptchaToken = await executeRecaptcha();
@@ -667,15 +710,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         // Create reservation data object
         const reservationData = {
-          firstName: formDataObj.firstName,
-          lastName: formDataObj.lastName,
-          email: formDataObj.email,
-          phone: document.getElementById('country-code').value + ' ' + formDataObj.phone,
-          address: formDataObj.address,
-          guests: parseInt(formDataObj.guests),
-          checkin: formDataObj.checkin,
-          checkout: formDataObj.checkout,
-          note: formDataObj.note || '',
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          phone: document.getElementById('country-code').value + ' ' + phone,
+          address: address,
+          guests: parseInt(guests),
+          checkin: checkin,
+          checkout: checkout,
+          note: note || '',
           recaptchaToken: recaptchaToken,
           submittedAt: serverTimestamp(),
           status: 'pending',
@@ -688,7 +731,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Show success message
         showSuccessMessage('Reservation submitted successfully! We will contact you soon.');
         
-        // Reset form
+        // Reset form and close modals
         resetForm();
         
       } catch (error) {
@@ -699,12 +742,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         confirmSubmitBtn.textContent = "Confirm & Submit";
       }
     });
+    
     // Cancel or close
     cancelConfirmationBtn.addEventListener('click', function() {
       confirmationModal.classList.remove('show');
       confirmationModal.classList.add('hidden');
       updateBodyModalOpen();
     });
+    
     confirmationCloseBtn.addEventListener('click', function() {
       confirmationModal.classList.remove('show');
       confirmationModal.classList.add('hidden');
