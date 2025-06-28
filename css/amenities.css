@@ -197,7 +197,8 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: stretch;
 }
 
 .amenity {
@@ -246,6 +247,8 @@
     color: var(--accent-color);
     letter-spacing: 0.5px;
     text-align: center;
+    word-break: break-word;
+    white-space: normal;
 }
 
 .amenity__desc {
@@ -254,6 +257,8 @@
     text-align: center;
     line-height: 1.5;
     font-weight: 400;
+    word-break: break-word;
+    white-space: normal;
 }
 
 /* --- Carousel Indicator --- */

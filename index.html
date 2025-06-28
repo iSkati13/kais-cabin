@@ -34,6 +34,9 @@
         gtag('config', 'G-GGSEQRX1YF');
     </script>
 
+    <!-- reCAPTCHA v3 -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcgbnArAAAAAN5X7tRuPKnQUODjze7RCWtDSG-b"></script>
+
     <!-- Firebase App (the core Firebase SDK) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <!-- Firestore -->
@@ -58,7 +61,7 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#amenities">Amenities</a></li>
                 <li><a href="#gallery">Gallery</a></li>
-                <li><a href="#booking">Booking</a></li>
+                <li><a href="#booking" class="navbar__book-link">Book Now</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
@@ -71,9 +74,12 @@
                 <div class="hero__content">
                     <div class="hero__content-inner">
                         <img src="assets/icons/logo.png" alt="Kai's Cabin logo" class="hero__logo" loading="lazy">
-                        <h1 class="hero__heading">The Perfect Family Getaway in Bulacan</h1>
+                        <h1 class="hero__heading">
+                            <span class="hero__heading-line1">The Perfect Family Getaway</span>
+                            <span class="hero__heading-line2">in Bulacan</span>
+                        </h1>
                         <p class="hero__tagline">Relax, recharge, and make memories at Kai's Cabin.</p>
-                        <a href="#booking" class="btn hero__btn">Book Now</a>
+                        <a href="#booking" class="btn hero__btn">Reserve Your Stay</a>
                     </div>
                 </div>
                 <div class="hero__scroll-indicator">
@@ -149,16 +155,16 @@
                             <h2>Book Your Stay</h2>
                             <div class="booking__calendar">
                                 <div id="bookingCalendar"></div>
-                                <div class="booking__dates">
-                                    <label>
-                                        Check-in:
-                                        <input type="text" id="checkin" readonly>
-                                    </label>
-                                    <label>
-                                        Check-out:
-                                        <input type="text" id="checkout" readonly>
-                                    </label>
-                                </div>
+                            </div>
+                            <div class="booking__dates">
+                                <label>
+                                    Check-in:
+                                    <input type="text" id="checkin" readonly>
+                                </label>
+                                <label>
+                                    Check-out:
+                                    <input type="text" id="checkout" readonly>
+                                </label>
                             </div>
                             <div class="booking__action">
                                 <button id="openModal" class="btn btn-primary">Reserve Now</button>
@@ -227,6 +233,11 @@
                                         <textarea id="message" name="note" rows="4" placeholder="Let us know if you have special requests."></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Send Reservation</button>
+                                    <div class="recaptcha-disclaimer">
+                                        This site is protected by reCAPTCHA and the Google
+                                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and
+                                        <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -319,12 +330,24 @@
                         <div class="contact__details">
                             <address>
                                 <div class="contact__detail">
-                                    <img src="assets/icons/email.png" alt="Email">
+                                    <i class="fas fa-envelope"></i>
                                     <span>info@kaiscabin.com</span>
                                 </div>
                                 <div class="contact__detail">
-                                    <img src="assets/icons/phone.png" alt="Phone">
+                                    <i class="fas fa-phone"></i>
                                     <span>+63 912 345 6789</span>
+                                </div>
+                                <div class="contact__detail">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <span>+63 912 345 6789</span>
+                                </div>
+                                <div class="contact__detail">
+                                    <i class="fab fa-viber"></i>
+                                    <span>+63 912 345 6789</span>
+                                </div>
+                                <div class="contact__detail">
+                                    <i class="fab fa-facebook-messenger"></i>
+                                    <span>Kai's Cabin</span>
                                 </div>
                             </address>
                         </div>
@@ -364,6 +387,11 @@
         </section>
     </div>
 
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -373,8 +401,8 @@
                         <h3>Kai's Cabin</h3>
                         <p>Your perfect escape in Bulacan. Experience comfort, nature, and unforgettable memories in our serene resthouse.</p>
                         <div class="footer__business-info">
-                            <p><strong>Business Hours:</strong> Check-in: 2:00 PM | Check-out: 11:00 AM</p>
-                            <p><strong>Location:</strong> Pulong Buhangin, Santa Maria, Bulacan</p>
+                            <p><i class="fas fa-clock"></i> <strong>Business Hours:</strong> Check-in: 2:00 PM | Check-out: 11:00 AM</p>
+                            <p><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> Pulong Buhangin, Santa Maria, Bulacan</p>
                         </div>
                     </div>
                     
@@ -384,7 +412,7 @@
                             <li><a href="#about">About Us</a></li>
                             <li><a href="#amenities">Amenities</a></li>
                             <li><a href="#gallery">Gallery</a></li>
-                            <li><a href="#booking">Book Now</a></li>
+                            <li><a href="#booking" class="navbar__book-link">Book Now</a></li>
                             <li><a href="#contact">Contact</a></li>
                         </ul>
                     </div>
@@ -401,13 +429,12 @@
                     </div>
                     
                     <div class="footer__section">
-                        <h4>Legal</h4>
+                        <h4>Support</h4>
                         <ul class="footer__links">
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms of Service</a></li>
-                            <li><a href="#">Cancellation Policy</a></li>
-                            <li><a href="#">House Rules</a></li>
-                            <li><a href="#">Safety Guidelines</a></li>
+                            <li><a href="https://docs.google.com/document/d/1A_VSbuRLDj6cKYE8x_v344h1vxZVVKCJ8wa-oTDPSX8/edit?usp=sharing" target="_blank" rel="noopener">Cancellation Policy</a></li>
+                            <li><a href="#house-rules">House Rules</a></li>
+                            <li><a href="#getting-there">Getting There</a></li>
+                            <li><a href="#nearby-attractions">Nearby Attractions</a></li>
                         </ul>
                     </div>
                 </div>

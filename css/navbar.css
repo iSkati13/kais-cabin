@@ -4,13 +4,10 @@
     left: 0;
     right: 0;
     z-index: var(--z-fixed);
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--white);
     border-bottom: 1px solid var(--gray-200);
     transition: all var(--transition-normal);
     font-family: var(--font-primary);
-    /* Ensure navbar is completely opaque */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -39,7 +36,7 @@
 
 .navbar__logo-text {
     font-size: 2.4rem;
-    font-weight: 900;
+    font-weight: 600;
     letter-spacing: 1px;
     color: var(--gray-900);
     display: block;
@@ -125,6 +122,29 @@
     width: 100%;
 }
 
+.navbar__book-link {
+    color: var(--brand-primary) !important;
+    font-weight: 600 !important;
+    position: relative;
+    background: rgba(93, 138, 74, 0.08);
+    border: 1.5px solid var(--brand-primary);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+/* Footer specific book link styling */
+.footer .navbar__book-link {
+    padding: var(--space-1) var(--space-3) !important;
+}
+
+.navbar__book-link:hover {
+    color: var(--brand-secondary) !important;
+    background: rgba(93, 138, 74, 0.12);
+    border-color: var(--brand-secondary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(93, 138, 74, 0.15);
+}
+
 .navbar__toggle {
     display: none;
     flex-direction: column;
@@ -172,7 +192,7 @@
 
 /* Scrolled state */
 .navbar--scrolled {
-    background: rgba(255, 255, 255, 0.98);
+    background: var(--white);
     box-shadow: var(--shadow-md);
 }
 
@@ -213,7 +233,7 @@
     }
     
     .navbar__links.open {
-        max-height: 400px;
+        max-height: 600px;
         opacity: 1;
         visibility: visible;
     }
@@ -238,6 +258,28 @@
     .navbar__links li a:hover,
     .navbar__links li a.active {
         background-color: var(--gray-50);
+    }
+    
+    .navbar__book-link {
+        background: var(--brand-primary) !important;
+        color: var(--white) !important;
+        border: none !important;
+        margin: var(--space-2) var(--space-4);
+        padding: var(--space-3) var(--space-4) !important;
+        border-radius: var(--radius-full);
+        text-align: center;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 8px rgba(93, 138, 74, 0.2);
+        font-size: var(--text-sm) !important;
+        display: block !important;
+        width: calc(100% - var(--space-8)) !important;
+    }
+    
+    .navbar__book-link:hover {
+        background: var(--brand-secondary) !important;
+        color: var(--white) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(93, 138, 74, 0.3);
     }
     
     .navbar__toggle {
@@ -268,9 +310,11 @@
     .navbar__container {
         padding: 0 var(--space-8);
     }
-    
     .navbar__links {
-        gap: var(--space-10);
+        gap: var(--space-6);
+    }
+    .navbar__links li a {
+        padding: var(--space-2) var(--space-4);
     }
 }
 

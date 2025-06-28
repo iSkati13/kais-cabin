@@ -109,11 +109,24 @@
     font-size: clamp(2.1rem, 5vw, 3.5rem);
     font-weight: 800;
     line-height: 1.08;
-    letter-spacing: -0.025em;
+    letter-spacing: 0.01em;
     margin: 0;
     color: var(--white);
     text-shadow: 0 4px 32px rgba(0,0,0,0.32), 0 2px 8px rgba(0,0,0,0.18);
     margin-bottom: var(--space-2);
+}
+
+.hero__heading-line1,
+.hero__heading-line2 {
+    display: block;
+}
+
+.hero__heading-line1 {
+    white-space: nowrap;
+}
+
+.hero__heading-line2 {
+    text-indent: 0;
 }
 
 .hero__tagline {
@@ -123,7 +136,7 @@
     line-height: 1.5;
     margin: 0;
     color: rgba(255, 255, 255, 0.95);
-    max-width: 600px;
+    max-width: 700px;
     text-shadow: 0 2px 12px rgba(0,0,0,0.22), 0 1px 4px rgba(0,0,0,0.13);
     margin-bottom: var(--space-4);
 }
@@ -132,9 +145,10 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    padding: var(--space-4) var(--space-8);
-    font-size: var(--text-lg);
-    font-weight: 600;
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--text-base);
+    font-weight: 700;
+    font-family: var(--font-secondary);
     background: var(--coastal-cream);
     color: var(--brand-dark);
     border-radius: var(--radius-full);
@@ -145,6 +159,10 @@
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    letter-spacing: 0.025em;
+    text-transform: none;
+    min-width: 180px;
+    justify-content: center;
 }
 
 .hero__btn::before {
@@ -281,6 +299,10 @@
         font-size: var(--text-xs);
         margin-top: var(--space-4);
     }
+    
+    .hero__heading-line1 {
+        white-space: normal;
+    }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
@@ -310,7 +332,12 @@
     
     .hero__content-inner {
         gap: var(--space-8);
-        margin-bottom: var(--space-12);
+        margin-bottom: var(--space-16);
+        max-width: 1000px;
+    }
+    
+    .hero__tagline {
+        max-width: 700px;
     }
 }
 
@@ -373,6 +400,7 @@
         font-size: 2.4rem;
         line-height: 1.13;
         margin-bottom: 0.7rem;
+        max-width: 360px !important;
     }
     .hero__content-inner {
         gap: 0.7rem;

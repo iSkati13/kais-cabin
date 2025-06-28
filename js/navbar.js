@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Navbar scroll behavior
+  // Navbar scroll behavior - only add scrolled class for styling
   window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
     
@@ -66,15 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       navbar.classList.remove('navbar--scrolled');
     }
-    
-    // Hide/show navbar on scroll (optional - can be removed if not needed)
-    if (currentScroll > lastScroll && currentScroll > 100) {
-      navbar.style.transform = 'translateY(-100%)';
-    } else {
-      navbar.style.transform = 'translateY(0)';
-    }
-    
-    lastScroll = currentScroll;
   });
 
   // Smooth scrolling for anchor links
@@ -123,4 +114,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('scroll', updateActiveNavItem);
   updateActiveNavItem(); // Initial call
+
+  // Back to Top Button
+  const backToTopButton = document.getElementById('backToTop');
+  
+  if (backToTopButton) {
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('show');
+      } else {
+        backToTopButton.classList.remove('show');
+      }
+    });
+
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  }
 });

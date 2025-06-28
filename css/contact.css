@@ -135,6 +135,11 @@
     border-radius: var(--radius-lg);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all var(--transition-fast);
+    margin-bottom: var(--space-3);
+}
+
+.contact__detail:last-child {
+    margin-bottom: 0;
 }
 
 .contact__detail:hover {
@@ -149,6 +154,30 @@
     filter: grayscale(0.2) brightness(0.95);
     margin-right: 8px;
     vertical-align: middle;
+}
+
+.contact__detail i {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    vertical-align: middle;
+    font-size: 1.2rem;
+}
+
+/* Messaging app specific colors */
+.contact__detail .fa-whatsapp {
+    color: #25D366;
+}
+
+.contact__detail .fa-viber {
+    color: #7360F2;
+}
+
+.contact__detail .fa-facebook-messenger {
+    color: #0084FF;
 }
 
 .contact__detail span {
@@ -245,6 +274,7 @@
     color: var(--gray-300);
     padding: var(--space-12) 0 var(--space-6);
     border-top: 1px solid var(--gray-700);
+    position: relative;
 }
 
 .footer__content {
@@ -257,6 +287,12 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: var(--space-8);
+}
+
+.footer__section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .footer__section h3 {
@@ -286,6 +322,15 @@
     font-size: var(--text-xs);
     color: var(--gray-500);
     margin: 0 0 var(--space-1) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.footer__business-info i {
+    color: var(--coastal-sand);
+    width: 16px;
+    text-align: center;
 }
 
 .footer__links {
@@ -315,9 +360,10 @@
 }
 
 .footer__divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gray-700), transparent);
-    margin: var(--space-4) 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--coastal-sand), transparent);
+    margin: var(--space-6) 0;
+    border-radius: 1px;
 }
 
 .footer__bottom {
@@ -325,24 +371,66 @@
     flex-direction: column;
     gap: var(--space-4);
     text-align: center;
+    align-items: center;
 }
 
 .footer__copyright p {
     font-size: var(--text-sm);
     color: var(--gray-500);
-    margin: 0;
+    margin: 0 0 var(--space-1) 0;
+}
+
+.footer__copyright p:last-child {
+    margin-bottom: 0;
 }
 
 .footer__business-details {
     display: flex;
-        flex-direction: column;
+    flex-direction: column;
     gap: var(--space-1);
+    align-items: center;
 }
 
 .footer__business-details p {
     font-size: var(--text-xs);
     color: var(--gray-600);
     margin: 0;
+}
+
+/* Back to Top Button */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--brand-primary);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all var(--transition-normal);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    z-index: 1000;
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background: var(--brand-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive Design for Footer */
@@ -377,21 +465,86 @@
 @media (min-width: 769px) and (max-width: 1024px) {
     .footer__main {
         grid-template-columns: repeat(2, 1fr);
-        gap: var(--space-6);
+        gap: var(--space-8);
+        align-items: start;
+    }
+    
+    .footer__section {
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    
+    .footer__section h3,
+    .footer__section h4 {
+        margin-bottom: var(--space-3);
+    }
+    
+    .footer__section p {
+        margin-bottom: var(--space-2);
+    }
+    
+    .footer__business-info {
+        margin-top: auto;
+        padding-top: var(--space-3);
     }
 }
 
 @media (min-width: 1025px) {
     .footer__main {
         grid-template-columns: repeat(4, 1fr);
-        gap: var(--space-8);
+        gap: var(--space-10);
+        align-items: start;
+    }
+    
+    .footer__section {
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    
+    .footer__section:first-child {
+        grid-column: span 1;
+    }
+    
+    .footer__section:nth-child(2),
+    .footer__section:nth-child(3),
+    .footer__section:nth-child(4) {
+        grid-column: span 1;
+        padding-top: var(--space-2);
+    }
+    
+    .footer__section h3,
+    .footer__section h4 {
+        margin-bottom: var(--space-4);
+    }
+    
+    .footer__section p {
+        margin-bottom: var(--space-3);
+    }
+    
+    .footer__business-info {
+        margin-top: auto;
+        padding-top: var(--space-4);
     }
     
     .footer__bottom {
         flex-direction: row;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         text-align: left;
+        gap: var(--space-8);
+    }
+    
+    .footer__copyright {
+        flex: 1;
+    }
+    
+    .footer__business-details {
+        flex: 1;
+        text-align: right;
     }
 }
 

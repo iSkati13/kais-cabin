@@ -14,20 +14,25 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+let galleryImages = [];
+
 async function fetchGalleryImages() {
-  // Order by createdAt if you want the same order as your admin
-  const q = query(collection(db, "gallery"), orderBy("createdAt", "asc"));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.docs.map(doc => doc.data());
+  try {
+    const snapshot = await getDocs(query(collection(db, "gallery"), orderBy("order", "asc")));
+    galleryImages = snapshot.docs.map(doc => doc.data());
+    return galleryImages;
+  } catch (error) {
+    console.error('Error fetching gallery images:', error);
+    return [];
+  }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const galleryImages = await fetchGalleryImages();
-  console.log(galleryImages);
+  await fetchGalleryImages();
 
   const slideshow = document.getElementById('gallerySlideshow');
   const dotsContainer = document.querySelector('.gallery__dots');
-  if (!slideshow || !dotsContainer) return;
+  if (!slideshow || !dotsContainer || galleryImages.length === 0) return;
 
   slideshow.innerHTML = galleryImages.map((img, i) => `
     <div class="gallery__slide${i === 0 ? ' active' : ''}">

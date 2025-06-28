@@ -1,10 +1,19 @@
-@import url('booking.css');
+/* Import all CSS modules */
+@import url('styles.css');
 @import url('navbar.css');
 @import url('hero.css');
 @import url('about.css');
 @import url('amenities.css');
 @import url('gallery.css');
 @import url('contact.css');
+
+/* Booking modular CSS */
+@import url('booking/layout.css');
+@import url('booking/modal.css');
+@import url('booking/responsive.css');
+
+/* Comment out the original booking.css */
+/* @import url('booking.css'); */
 
 /* Modern Design System Variables - Coastal/Olive Garden Theme */
 :root {
@@ -395,4 +404,15 @@ img, picture, video, canvas, svg {
         border-radius: 10px;
         margin: 10px 0 0 0;
     }
+}
+
+/* Disable all :hover effects on touch devices only */
+@media (hover: none) and (pointer: coarse) {
+  *:hover {
+    background: none !important;
+    color: inherit !important;
+    box-shadow: none !important;
+    border-color: inherit !important;
+    /* Add more properties if needed */
+  }
 }
