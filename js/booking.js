@@ -188,21 +188,100 @@ function validateReservationData(data) {
 
 // Get reCAPTCHA token
 function executeRecaptcha() {
-    if (typeof grecaptcha !== 'undefined' && grecaptcha.ready) {
-        grecaptcha.ready(() => {
-            grecaptcha.execute('6LfKXxEpAAAAAJxJxJxJxJxJxJxJxJxJxJxJxJx', {action: 'submit'})
-                .then(token => {
-                    // reCAPTCHA token generated successfully
-                    return token;
-                })
-                .catch(error => {
-                    console.error('reCAPTCHA error:', error);
-                    throw new Error('reCAPTCHA verification failed');
-                });
-        });
-    } else {
-        console.error('reCAPTCHA not loaded!');
-        throw new Error('reCAPTCHA not available');
+    return new Promise((resolve, reject) => {
+        if (typeof grecaptcha !== 'undefined' && grecaptcha.ready) {
+            grecaptcha.ready(() => {
+                grecaptcha.execute('6LcgbnArAAAAAN5X7tRuPKnQUODjze7RCWtDSG-b', {action: 'submit'})
+                    .then(token => {
+                        resolve(token);
+                    })
+                    .catch(error => {
+                        console.error('reCAPTCHA error:', error);
+                        reject(new Error('reCAPTCHA verification failed'));
+                    });
+            });
+        } else {
+            console.error('reCAPTCHA not loaded!');
+            reject(new Error('reCAPTCHA not available'));
+        }
+    });
+}
+
+// Validate form data
+function validateFormData(formData) {
+    const errors = [];
+    const data = Object.fromEntries(formData);
+    
+    // Validate required fields
+    if (!data.firstName || !data.firstName.trim()) errors.push('First name is required');
+    if (!data.lastName || !data.lastName.trim()) errors.push('Last name is required');
+    if (!data.email || !data.email.trim()) errors.push('Email is required');
+    if (!data.phone || !data.phone.trim()) errors.push('Phone is required');
+    if (!data.address || !data.address.trim()) errors.push('Address is required');
+    if (!data.guests || !data.guests.trim()) errors.push('Number of guests is required');
+    if (!data.checkin || !data.checkin.trim()) errors.push('Check-in date is required');
+    if (!data.checkout || !data.checkout.trim()) errors.push('Check-out date is required');
+    
+    // Validate email format
+    if (data.email && !validateEmail(data.email)) {
+        errors.push('Please enter a valid email address');
+    }
+    
+    // Validate phone format
+    if (data.phone && !validatePhone(data.phone)) {
+        errors.push('Please enter a valid phone number');
+    }
+    
+    // Validate guests number
+    const guests = parseInt(data.guests);
+    if (isNaN(guests) || guests < 1 || guests > 50) {
+        errors.push('Number of guests must be between 1 and 50');
+    }
+    
+    return errors;
+}
+
+// Show success message
+function showSuccessMessage(message) {
+    alert(message); // Simple alert for now, can be enhanced with a modal
+}
+
+// Show error message
+function showErrorMessage(message) {
+    alert('Error: ' + message); // Simple alert for now, can be enhanced with a modal
+}
+
+// Reset form
+function resetForm() {
+    const form = document.getElementById('reservationForm');
+    if (form) {
+        form.reset();
+    }
+    
+    // Reset calendar selection
+    selectedStart = null;
+    selectedEnd = null;
+    selectionMode = 'checkin';
+    updateFields();
+    renderCalendar();
+    
+    // Close modals
+    const reservationModal = document.getElementById('reservationModal');
+    const confirmationModal = document.getElementById('confirmationModal');
+    if (reservationModal) reservationModal.classList.remove('show');
+    if (confirmationModal) confirmationModal.classList.remove('show');
+    updateBodyModalOpen();
+}
+
+// Get client IP (simplified version)
+async function getClientIP() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+    } catch (error) {
+        console.error('Could not get IP address:', error);
+        return 'unknown';
     }
 }
 
@@ -567,17 +646,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         // Gather all form data
         const formData = new FormData(reservationForm);
-
-        // Security checks - RE-ENABLED
-        checkRateLimit();
         
-        // Get reCAPTCHA token (this will block bots)
-        const recaptchaToken = await executeRecaptcha();
-        if (!recaptchaToken) {
-          throw new Error('CAPTCHA verification failed. Please try again.');
-        }
+        // Convert FormData to object for validation
+        const formDataObj = Object.fromEntries(formData);
         
-        // Rate limiting check
+        // Security checks
         checkRateLimit();
         
         // Validate form data
@@ -586,14 +659,30 @@ document.addEventListener('DOMContentLoaded', async () => {
           throw new Error(errors.join('\n'));
         }
         
-        // Submit to Firestore
+        // Get reCAPTCHA token
+        const recaptchaToken = await executeRecaptcha();
+        if (!recaptchaToken) {
+          throw new Error('CAPTCHA verification failed. Please try again.');
+        }
+        
+        // Create reservation data object
         const reservationData = {
-          ...formData,
-          recaptchaToken,
-          submittedAt: new Date(),
-          ipAddress: await getClientIP()
+          firstName: formDataObj.firstName,
+          lastName: formDataObj.lastName,
+          email: formDataObj.email,
+          phone: document.getElementById('country-code').value + ' ' + formDataObj.phone,
+          address: formDataObj.address,
+          guests: parseInt(formDataObj.guests),
+          checkin: formDataObj.checkin,
+          checkout: formDataObj.checkout,
+          note: formDataObj.note || '',
+          recaptchaToken: recaptchaToken,
+          submittedAt: serverTimestamp(),
+          status: 'pending',
+          approved: false
         };
         
+        // Submit to Firestore
         const docRef = await addDoc(collection(db, 'reservations'), reservationData);
         
         // Show success message
@@ -603,6 +692,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         resetForm();
         
       } catch (error) {
+        console.error('Submission error:', error);
         showErrorMessage(error.message);
       } finally {
         confirmSubmitBtn.disabled = false;
