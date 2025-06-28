@@ -141,6 +141,8 @@ html {
     scroll-behavior: smooth;
     font-size: 16px;
     -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 body {
@@ -152,6 +154,8 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 /* Typography */
@@ -179,6 +183,8 @@ a {
     color: var(--brand-primary);
     text-decoration: none;
     transition: color var(--transition-fast);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 a:hover {
@@ -199,20 +205,21 @@ img, picture, video, canvas, svg {
     justify-content: center;
     gap: var(--space-2);
     padding: var(--space-3) var(--space-6);
-    font-family: var(--font-primary);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    line-height: 1;
     border: none;
     border-radius: var(--radius-lg);
-    cursor: pointer;
-    transition: all var(--transition-fast);
+    font-family: var(--font-primary);
+    font-size: var(--text-base);
+    font-weight: 600;
     text-decoration: none;
-    white-space: nowrap;
-    user-select: none;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+    user-select: none;
 }
 
 .btn:focus-visible {
@@ -406,13 +413,34 @@ img, picture, video, canvas, svg {
     }
 }
 
-/* Disable all :hover effects on touch devices only */
+/* Touch-friendly improvements */
 @media (hover: none) and (pointer: coarse) {
-  *:hover {
-    background: none !important;
-    color: inherit !important;
-    box-shadow: none !important;
-    border-color: inherit !important;
-    /* Add more properties if needed */
+  /* Ensure buttons and interactive elements have proper touch targets */
+  .btn, button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+  }
+  
+  /* Improve touch feedback for buttons */
+  .btn:active, button:active, a:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  /* Prevent text selection on touch */
+  .btn, button, a {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Ensure proper scrolling behavior */
+  html, body {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto;
   }
 }
