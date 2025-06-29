@@ -1,14 +1,4 @@
-// Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyCVnzUCtkX-24cOBOZoJ2FyZJHEIGAp-8s",
-  authDomain: "kais-cabin-admin.firebaseapp.com",
-  projectId: "kais-cabin-admin",
-  storageBucket: "kais-cabin-admin.appspot.com",
-  messagingSenderId: "425186271736",
-  appId: "1:425186271736:web:fb17e1d9752047077e360d",
-  measurementId: "G-6XC2710XE3"
-};
-
+// Firebase config - using centralized configuration
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 

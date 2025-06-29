@@ -1,16 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCVnzUCtkX-24cOBOZoJ2FyZJHEIGAp-8s",
-  authDomain: "kais-cabin-admin.firebaseapp.com",
-  projectId: "kais-cabin-admin",
-  storageBucket: "kais-cabin-admin.firebasestorage.app",
-  messagingSenderId: "425186271736",
-  appId: "1:425186271736:web:fb17e1d9752047077e360d",
-  measurementId: "G-6XC2710XE3"
-};
-
+// Using centralized Firebase configuration
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 

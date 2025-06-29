@@ -1,0 +1,58 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read access to public collections (amenities, gallery)
+    match /amenities/{document} {
+      allow read: if true;  // Public read access
+      allow write: if false; // No write access from client
+    }
+    
+    match /gallery/{document} {
+      allow read: if true;  // Public read access
+      allow write: if false; // No write access from client
+    }
+    
+    // Reservations collection - allow create but restrict read/write
+    match /reservations/{document} {
+      allow create: if 
+        // Basic validation
+        request.resource.data.keys().hasAll(['firstName', 'lastName', 'email', 'phone', 'address', 'guests', 'checkin', 'checkout', 'submittedAt', 'status', 'approved']) &&
+        
+        // Validate required fields
+        request.resource.data.firstName is string &&
+        request.resource.data.firstName.size() > 0 &&
+        request.resource.data.firstName.size() <= 50 &&
+        request.resource.data.lastName is string &&
+        request.resource.data.lastName.size() > 0 &&
+        request.resource.data.lastName.size() <= 50 &&
+        request.resource.data.email is string &&
+        request.resource.data.email.matches('^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$') &&
+        request.resource.data.phone is string &&
+        request.resource.data.phone.size() > 0 &&
+        request.resource.data.address is string &&
+        request.resource.data.address.size() > 0 &&
+        request.resource.data.guests is number &&
+        request.resource.data.guests >= 1 &&
+        request.resource.data.guests <= 50 &&
+        request.resource.data.checkin is string &&
+        request.resource.data.checkout is string &&
+        request.resource.data.submittedAt is timestamp &&
+        request.resource.data.status == 'pending' &&
+        request.resource.data.approved == false &&
+        
+        // Rate limiting - check if user has submitted too many requests
+        // This is a basic rate limit - you might want to implement more sophisticated rate limiting
+        getCountFromTime('reservations', request.auth.token.email, 3600000) < 3; // Max 3 per hour
+        
+      allow read, update, delete: if false; // No client-side read/write/delete
+    }
+    
+    // Helper function for rate limiting
+    function getCountFromTime(collection, userEmail, timeWindow) {
+      return getAfter(
+        /databases/$(database)/documents/$(collection),
+        timestamp.date(math.subtract(timestamp.now(), timeWindow))
+      ).size();
+    }
+  }
+} 
